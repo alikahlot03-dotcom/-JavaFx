@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.TransactionsController" spacing="20" stylesheets="@../../css/styleProject.css">
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.TransactionsController" spacing="20" stylesheets="@../css/styleProject.css">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30"/>
     </padding>
@@ -21,24 +22,25 @@
             </columnConstraints>
             
             <children>
-                <Label text="Amount:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label text="Amount:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="secondary-label" />
                 <TextField fx:id="amountField" promptText="e.g. 50.0" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="text-field" />
                 
-                <Label text="Date:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Label text="Date:" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="secondary-label" />
                 <DatePicker fx:id="datePicker" maxWidth="Infinity" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                 
-                <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="secondary-label" />
                 <ComboBox fx:id="categoryComboBox" maxWidth="Infinity" promptText="Select Category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 
-                <Label text="Type:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Label text="Type:" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="secondary-label" />
                 <ComboBox fx:id="typeComboBox" maxWidth="Infinity" promptText="Select Type" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             </children>
         </GridPane>
         
         <HBox alignment="CENTER_RIGHT">
-            <Button fx:id="addButton" text="Add Transaction" onAction="#handleAddTransaction" styleClass="button" />
+            <Button fx:id="addButton" text="Add Transaction" onAction="#handleAddTransaction" styleClass="primary-button" />
         </HBox>
     </VBox>
+
 
     <VBox spacing="10" VBox.vgrow="ALWAYS" styleClass="card">
         <Label text="Recent Transactions" styleClass="header-label" />

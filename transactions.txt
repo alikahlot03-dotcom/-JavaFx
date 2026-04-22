@@ -5,3 +5,4 @@
 4,Rent,88.0,Expense,2026-04-21
 5,Rent,888.0,Income,2026-04-21
 6,Rent,50.0,Income,2026-04-22
+7,Salary,122.0,Income,2026-04-22

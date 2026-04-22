@@ -54,8 +54,7 @@ public class LoginController implements Initializable {
     }    
 
     @FXML
-    private void EventHandler(ActionEvent event) throws NoSuchAlgorithmException {
-    
+    private void EventHandler(ActionEvent event) throws NoSuchAlgorithmException, IOException {
    if (textFieldEmail.getText().isEmpty() || textFieldPassword.getText().isEmpty()) {
      Alert alert = new Alert(Alert.AlertType.ERROR);
          alert.setTitle("Fieled");
@@ -98,11 +97,16 @@ public class LoginController implements Initializable {
         
         success.getDialogPane().getStyleClass().add("alert-success");
         success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-
-
-        success.show();
-        
-        //هين رح احط الانتقال الي الداش بورد
+//        success.show();
+             success.showAndWait();
+              //هين رح احط الانتقال الي الداش بورد
+              
+              Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+               Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+               stage.setScene(new Scene(root));
+              stage.setTitle("Finance Tracker - Dashboard");
+              stage.show();
+            
     } else {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Login Failed");
@@ -147,4 +151,3 @@ public class LoginController implements Initializable {
     
 
     
-
