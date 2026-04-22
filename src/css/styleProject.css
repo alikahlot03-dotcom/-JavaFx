@@ -1,0 +1,186 @@
+/* 
+    Finance Tracker Unified Design System
+    Theme: Modern Financial (Deep Purple & Vibrant Blue)
+*/
+
+.root {
+    /* Color Palette */
+    -fx-primary-color: #8e44ad;
+    -fx-secondary-color: #3498db;
+    -fx-bg-gradient: linear-gradient(to bottom right, #3498db, #8e44ad);
+    -fx-sidebar-bg: #2c3e50;
+    -fx-card-bg: #ffffff;
+    -fx-text-main: #2c3e50;
+    -fx-text-secondary: #7f8c8d;
+    -fx-accent-color: #2ecc71;
+    -fx-danger-color: #e74c3c;
+
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-background-color: -fx-bg-gradient;
+}
+
+/* ------------------------------------------------------------------------- */
+/* Common UI Components */
+/* ------------------------------------------------------------------------- */
+
+.label {
+    -fx-text-fill: -fx-text-main;
+    -fx-font-size: 14px;
+}
+
+.header-text, .header-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-main;
+}
+
+.secondary-label {
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-size: 13px;
+}
+
+/* Buttons */
+.button, #btn {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-transition: 0.3s;
+}
+
+.button:hover, #btn:hover {
+    -fx-background-color: #732d91;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.button:pressed, #btn:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Text Fields */
+.text-field, .password-field {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8px;
+    -fx-padding: 12px;
+    -fx-text-fill: -fx-text-main;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: -fx-secondary-color;
+    -fx-border-width: 2px;
+}
+
+/* ------------------------------------------------------------------------- */
+/* Layout Containers */
+/* ------------------------------------------------------------------------- */
+
+/* Login/SignUp Containers */
+.login-container, .signUp-container {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 40px;
+    -fx-spacing: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 30, 0, 0, 15);
+}
+
+/* Dashboard Sidebar */
+.sidebar-container {
+    -fx-background-color: -fx-sidebar-bg;
+    -fx-padding: 25px;
+    -fx-spacing: 15px;
+}
+
+.sidebar-container .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ecf3f9;
+    -fx-alignment: center-left;
+    -fx-padding: 12px 15px;
+    -fx-background-radius: 5px;
+}
+
+.sidebar-container .button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-container .active-nav {
+    -fx-background-color: -fx-secondary-color;
+    -fx-text-fill: white;
+}
+
+/* Content Cards */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 15, 0, 0, 5);
+}
+
+/* ------------------------------------------------------------------------- */
+/* Tables & Lists */
+/* ------------------------------------------------------------------------- */
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #f1f2f6;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f1f2f6;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -fx-text-main;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: -fx-text-main;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fdfdfd;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(52, 152, 219, 0.2);
+}
+
+/* ------------------------------------------------------------------------- */
+/* Dialogs & Alerts */
+/* ------------------------------------------------------------------------- */
+
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-header-panel-background: -fx-bg-gradient;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.dialog-pane .content {
+    -fx-text-fill: -fx-text-main;
+}
+
+.alert-success .dialog-pane {
+    -fx-header-panel-background: linear-gradient(to bottom right, #2ecc71, #27ae60);
+}

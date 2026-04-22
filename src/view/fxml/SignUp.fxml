@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" stylesheets="@../../css/styleProject.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.SignUpController">
+   <children>
+      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="600.0" prefWidth="600.0" StackPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" maxWidth="350.0" prefHeight="421.0" prefWidth="600.0" spacing="20.0" styleClass="signUp-container">
+                     <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                     </padding>
+                     <children>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <Label alignment="TOP_CENTER" styleClass="header-text" text="Create New Account" />
+                              <Label alignment="TOP_CENTER" text="Fill the information below to Sign up">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <TextField fx:id="textFieldFirstName" maxWidth="280.0" prefWidth="280.0" promptText="First Name" styleClass="text-field" />
+                        <TextField fx:id="textFieldLastName" maxWidth="280.0" prefWidth="280.0" promptText="Last Name" styleClass="text-field" />
+                        <TextField fx:id="textFieldEmail" maxWidth="280.0" prefWidth="280.0" promptText="Email" styleClass="text-field" />
+                        <PasswordField fx:id="textFieldPassword" maxWidth="280.0" prefWidth="280.0" promptText="Password" styleClass="text-field" />
+                        <PasswordField fx:id="textFeildConfirmPassword" maxWidth="280.0" prefWidth="280.0" promptText="Confirm Password" styleClass="text-field" />
+                        <Button id="btn" fx:id="btnSignUp" mnemonicParsing="false" onAction="#SignupHandler" text="Sign Up" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="50.0" top="50.0" />
+         </padding>
+      </StackPane>
+   </children>
+</AnchorPane>
