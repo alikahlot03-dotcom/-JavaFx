@@ -33,7 +33,7 @@ public class ReportsController implements Initializable {
     @FXML
     private TableView<Transaction> tableTransactions;
 
-    // ✅ تعديل جديد:
+    //  تعديل جديد:
     // غيرنا Category -> Transaction
     // لأن الجدول يعرض عمليات مالية مش تصنيفات
     @FXML
@@ -49,7 +49,7 @@ public class ReportsController implements Initializable {
     private TableColumn<Transaction, String> colType;
 
     
-    // ✅ تعديل جديد مهم:
+    //  تعديل جديد مهم:
     // خزنا البيانات داخل ObservableList
     // عشان نستخدمها بالجدول + بالحسابات + بالStreams
     private ObservableList<Transaction> transactionList =
@@ -79,7 +79,7 @@ public class ReportsController implements Initializable {
 
     
     
-    // ✅ تحميل العمليات من الملف
+    //  تحميل العمليات من الملف
     void loadTransactions() {
 
         // تنظيف الليست قبل التحميل
@@ -134,7 +134,7 @@ public class ReportsController implements Initializable {
 
     
     
-    // ✅ حساب التقرير باستخدام Streams
+    //  حساب التقرير باستخدام Streams
     void calculateReport() {
 
         
