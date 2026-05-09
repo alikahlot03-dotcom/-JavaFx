@@ -14,7 +14,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Start with Login page
-        URL fxmlLocation = getClass().getResource("/view/fxml/Login.fxml");
+        URL fxmlLocation = getClass().getResource("/view/Login.fxml");
         
         if (fxmlLocation != null) {
             Parent root = FXMLLoader.load(fxmlLocation);
@@ -36,7 +36,7 @@ public class MainApp extends Application {
             // Fallback screen if FXML is missing
             javafx.scene.layout.VBox root = new javafx.scene.layout.VBox();
             root.setAlignment(javafx.geometry.Pos.CENTER);
-            root.getChildren().add(new javafx.scene.control.Label("Critical Error: Login.fxml not found at /view/fxml/Login.fxml"));
+            root.getChildren().add(new javafx.scene.control.Label("Critical Error: Login.fxml not found at /view/Login.fxml"));
             primaryStage.setTitle("Finance Tracker - Error");
             primaryStage.setScene(new Scene(root, 400, 300));
             primaryStage.show();
