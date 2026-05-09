@@ -1,11 +1,51 @@
 
 .root {
+<<<<<<< HEAD
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-background-color: linear-gradient(to bottom right, #3498db, #8e44ad); 
 }
 
 
 
+=======
+    -fx-font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #3498db, #8e44ad); 
+    -fx-font-smoothing-type: gray;
+}
+
+/* Typography Hierarchy - Integrated into old style */
+.header-text {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2c3e50;
+    -fx-letter-spacing: 0.5px;
+    -fx-padding: 5px;
+}
+
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.label {
+    -fx-text-fill: #34495e;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.secondary-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.label-hint {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+}
+
+/* Containers from your code */
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .login-container {
     -fx-background-color: white;
     -fx-background-radius: 20px;          
@@ -26,6 +66,7 @@
     -fx-alignment: center;
 }
 
+<<<<<<< HEAD
 
 
 .label {
@@ -44,17 +85,27 @@
 }
 
 
+=======
+/* Form Elements */
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .text-field {
     -fx-background-color: white;
     -fx-background-radius: 5px;
     -fx-border-color: #dcdde1;
     -fx-border-radius: 5px;
     -fx-padding: 10px;
+<<<<<<< HEAD
     -fx-pref-width: 300px;
     -fx-text-fill: black;
 }
 
 
+=======
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .text-field:focused {
     -fx-border-color: #00d2ff;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 210, 255, 0.4), 10, 0, 0, 0);
@@ -62,11 +113,17 @@
     -fx-border-width: 2px;
 }
 
+<<<<<<< HEAD
 
 #btn {
     -fx-background-color: #3498db;
     -fx-text-fill: white;
 -fx-background-color: #8e44ad;
+=======
+/* Buttons from your code */
+#btn {
+    -fx-background-color: #8e44ad;
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -75,6 +132,7 @@
     -fx-cursor: hand;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
     -fx-pref-width: 250px;
+<<<<<<< HEAD
      -fx-pref-height: 45px;
 }
 
@@ -95,6 +153,16 @@
 }
 
 
+=======
+    -fx-pref-height: 45px;
+}
+
+#btn:hover {
+    -fx-background-color: #732d91;
+}
+
+/* Utils and Account */
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .account {
     -fx-padding: 30px 0 0 0;
 }
@@ -105,11 +173,16 @@
     -fx-cursor: hand;
     -fx-padding: 0px 0px 5px 0px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 #createAccount:hover {
     -fx-underline: true;
     -fx-text-fill:#fd79a8;
 }
 
+<<<<<<< HEAD
 
 /* ===========================
    CARD STYLE
@@ -280,6 +353,9 @@
 
 
 /* تنسيق الحاوية الكلية للتنبيه */
+=======
+/* Alerts from your code */
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .alert.dialog-pane {
     -fx-background-color: linear-gradient(to bottom right, #3498db, #8e44ad);
     -fx-border-color: white;
@@ -287,11 +363,15 @@
     -fx-padding: 10px;
 }
 
+<<<<<<< HEAD
 /* تنسيق النص الداخلي ليتوسط التنبيه */
+=======
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .alert.dialog-pane .content.label {
     -fx-font-weight: bold;
     -fx-font-size: 15px;
     -fx-text-fill: white;
+<<<<<<< HEAD
     -fx-alignment: center; /* توسيط النص */
     -fx-text-alignment: center;
     -fx-padding: 10 0 0 0; /* إعطاء مساحة علوية بسيطة ليبتعد عن الحافة */
@@ -312,11 +392,23 @@
 /* تنسيق الحاوية الكلية لتنبيه النجاح */
 .alert-success.dialog-pane {
     -fx-background-color: linear-gradient(to bottom right, #2ecc71, #27ae60); /* تدرج أخضر مريح للعين */
+=======
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-padding: 10 0 0 0;
+}
+
+.alert-success.dialog-pane {
+    -fx-background-color: linear-gradient(to bottom right, #2ecc71, #27ae60);
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     -fx-border-color: white;
     -fx-border-width: 2px;
 }
 
+<<<<<<< HEAD
 /* تنسيق النص الداخلي لرسالة النجاح */
+=======
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .alert-success.dialog-pane .content.label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -324,11 +416,15 @@
     -fx-font-size: 18px;
 }
 
+<<<<<<< HEAD
 /* تنسيق زر الـ OK ليبدو متناسقاً مع الخلفية الخضراء */
+=======
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 .alert-success.dialog-pane .button {
     -fx-background-color: white;
     -fx-text-fill: #27ae60;
     -fx-font-weight: bold;
+<<<<<<< HEAD
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif
 }
 /*
@@ -416,4 +512,77 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: 16px 16px; 
     -fx-background-position: left 10 center;
+=======
+}
+
+/* Dashboard UI Classes - Adapted to match your color scheme */
+.sidebar-container {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.sidebar-container .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-alignment: center-left;
+    -fx-padding: 12px 20px;
+}
+
+.sidebar-container .button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-container .active-nav {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-font-weight: 800;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 25px;
+    -fx-spacing: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.primary-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.danger-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
+}
+
+.danger-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8px;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7f8c8d;
+    -fx-text-transform: uppercase;
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 }

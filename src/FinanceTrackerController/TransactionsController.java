@@ -9,7 +9,10 @@ import model.Transaction;
 
 import java.io.*;
 import java.nio.file.Files;
+<<<<<<< HEAD
 import java.nio.file.Path;
+=======
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
@@ -35,8 +38,13 @@ public class TransactionsController {
     @FXML private TableColumn<Transaction, LocalDate> dateColumn;
 
     private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
+<<<<<<< HEAD
      final String TRANSACTIONS_FILE = "Document/transactions.txt";
       final String CATEGORIES_FILE = "Document/categories.txt";
+=======
+    private final String TRANSACTIONS_FILE = "transactions.txt";
+    private final String CATEGORIES_FILE = "categories.txt";
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 
     @FXML
     public void initialize() {
@@ -59,6 +67,7 @@ public class TransactionsController {
         datePicker.setValue(LocalDate.now());
     }
 
+<<<<<<< HEAD
 
     void loadCategories() {
     try (Stream<String> lines = Files.lines(Paths.get(CATEGORIES_FILE))) {
@@ -77,6 +86,17 @@ public class TransactionsController {
   
     
      void loadTransactions() {
+=======
+    private void loadCategories() {
+        try (Stream<String> lines = Files.lines(Paths.get(CATEGORIES_FILE))) {
+            categoryComboBox.setItems(FXCollections.observableArrayList(lines.collect(Collectors.toList())));
+        } catch (IOException e) {
+            System.err.println("Error loading categories: " + e.getMessage());
+        }
+    }
+
+    private void loadTransactions() {
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         if (!Files.exists(Paths.get(TRANSACTIONS_FILE))) return;
 
         try (Stream<String> lines = Files.lines(Paths.get(TRANSACTIONS_FILE))) {
@@ -87,8 +107,12 @@ public class TransactionsController {
                      if (parts.length == 5) {
                          transactionList.add(new Transaction(
                                  Integer.parseInt(parts[0]),
+<<<<<<< HEAD
                                    parts[1],
                                 
+=======
+                                 parts[1],
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
                                  Double.parseDouble(parts[2]),
                                  parts[3],
                                  LocalDate.parse(parts[4])
@@ -101,7 +125,11 @@ public class TransactionsController {
     }
 
     @FXML
+<<<<<<< HEAD
      void handleAddTransaction() {
+=======
+    private void handleAddTransaction() {
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         if (!validateInputs()) return;
 
         try {
@@ -130,7 +158,11 @@ public class TransactionsController {
         }
     }
 
+<<<<<<< HEAD
      boolean validateInputs() {
+=======
+    private boolean validateInputs() {
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         // التحقق من الحقول الفارغة [4، 11]
         if (amountField.getText().isEmpty() || categoryComboBox.getValue() == null || 
             typeComboBox.getValue() == null || datePicker.getValue() == null) {
@@ -153,11 +185,16 @@ public class TransactionsController {
         return true;
     }
 
+<<<<<<< HEAD
       void saveTransactionToFile(Transaction t) throws IOException {
+=======
+    private void saveTransactionToFile(Transaction t) throws IOException {
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         String data = t.toString() + System.lineSeparator();
         Files.write(Paths.get(TRANSACTIONS_FILE), data.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
+<<<<<<< HEAD
 //    private void showAlert(Alert.AlertType type, String title, String content) {
 //        Alert alert = new Alert(type);
 //        alert.setTitle(title);
@@ -195,4 +232,13 @@ public class TransactionsController {
     showAlert(type, title, content, false);
 }
      
+=======
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 }

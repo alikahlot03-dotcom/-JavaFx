@@ -6,11 +6,18 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<<<<<<< HEAD
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../css/styleProject.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.SignUpController">
+=======
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" stylesheets="@../css/styleProject.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.SignUpController">
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -73,7 +80,11 @@
                         </Label>
                         <PasswordField fx:id="textFeildConfirmPassword" maxWidth="280.0" prefWidth="280.0" promptText="Confirm Password" styleClass="text-field">
                            <VBox.margin>
+<<<<<<< HEAD
                               <Insets bottom="10.0" />
+=======
+                              <Insets bottom="20.0" />
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
                            </VBox.margin>
                         </PasswordField>
                         <Label fx:id="labelHIntConfirmPassword" alignment="TOP_LEFT" maxWidth="300.0" styleClass="label-hint">
@@ -81,6 +92,7 @@
                               <Insets top="-21.0" />
                            </VBox.margin>
                         </Label>
+<<<<<<< HEAD
                         <Button id="btn" fx:id="btnSignUp" mnemonicParsing="false" onAction="#SignupHandler" text="Sign Up">
                            <VBox.margin>
                               <Insets left="15.0" right="15.0" />
@@ -101,6 +113,10 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+=======
+                        <Button id="btn" fx:id="btnSignUp" mnemonicParsing="false" onAction="#SignupHandler" text="Sign Up" />
+                     </children>
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
                   </VBox>
                </children>
             </VBox>
@@ -110,4 +126,8 @@
          </padding>
       </StackPane>
    </children>
+<<<<<<< HEAD
 </AnchorPane>
+=======
+</AnchorPane>
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd

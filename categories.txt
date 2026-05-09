@@ -1,0 +1,8 @@
+Food
+Salary
+Rent
+Shopping
+Transport
+Entertainment
+Health
+Utilities

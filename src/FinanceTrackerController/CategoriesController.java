@@ -3,10 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 package FinanceTrackerController;
+<<<<<<< HEAD
 import java.io.*;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+=======
+import FinanceTrackerController.Category;
+import FinanceTrackerController.Category;
+import java.io.*;
+import java.net.URL;
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +30,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+<<<<<<< HEAD
 import model.Category;
+=======
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 
 
 /**
@@ -53,8 +63,11 @@ public class CategoriesController implements Initializable {
     private TableColumn<Category, Integer> colId;
     @FXML
     private TableColumn<Category, Integer> colName;
+<<<<<<< HEAD
     @FXML
     private TextField txtSearch;
+=======
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     
     private ObservableList<Category> categoryList = FXCollections.observableArrayList();
     private int idCounter = 1;
@@ -67,6 +80,7 @@ public class CategoriesController implements Initializable {
  
     public void initialize(URL url, ResourceBundle rb) {
        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+<<<<<<< HEAD
        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         loadCategories();
        tableCategories.setItems(categoryList);
@@ -117,11 +131,20 @@ public class CategoriesController implements Initializable {
 
     tableCategories.setItems(FXCollections.observableArrayList(filtered));
 }
+=======
+    colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    tableCategories.setItems(categoryList);
+    setNextId();
+    
+    
+    }  
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
    
     private void showAlert(String title, String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle(title);
     alert.setContentText(message);
+<<<<<<< HEAD
     alert.getDialogPane().getStylesheets().add(
          getClass().getResource("/css/styleProject.css").toExternalForm());
     alert.showAndWait();
@@ -129,6 +152,13 @@ public class CategoriesController implements Initializable {
      void saveToFile(Category category) {
     try {
         FileWriter writer = new FileWriter("Document/categories.txt", true);
+=======
+    alert.showAndWait();
+}
+    private void saveToFile(Category category) {
+    try {
+        FileWriter writer = new FileWriter("src/database/categories.txt" , true);
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         writer.write(category.getId() + "," + category.getName() + "\n");
         writer.close();
     } catch (IOException e) {
@@ -142,7 +172,11 @@ public class CategoriesController implements Initializable {
         String name = txtCategoryName.getText();
 
     if (name.isEmpty()) {
+<<<<<<< HEAD
         showAlert("Error","Category name is required!");
+=======
+        showAlert("Error", "Category name is required!");
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         return;
     }
 
@@ -153,6 +187,7 @@ public class CategoriesController implements Initializable {
         }
     }
 
+<<<<<<< HEAD
     Category category = new Category(idCounter++, name) {};
   
     categoryList.add(category);
@@ -184,10 +219,37 @@ public class CategoriesController implements Initializable {
      void updateFile() {
     try {
         FileWriter writer = new FileWriter("Document/categories.txt");
+=======
+    Category category = new Category(idCounter++, name);
+    categoryList.add(category);
+
+    saveToFile(category); 
+
+    txtCategoryName.clear();
+    }
+       @FXML
+    void handleDeleteCategory(ActionEvent event) {
+ Category selected = tableCategories.getSelectionModel().getSelectedItem();
+
+    if (selected == null) {
+        showAlert("Error", "Please select a category to delete!");
+        return;
+    }
+
+    categoryList.remove(selected);
+
+    updateFile(); 
+    }
+    
+    private void updateFile() {
+    try {
+        FileWriter writer = new FileWriter("src/database/categories.txt");
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 
         for (Category c : categoryList) {
             writer.write(c.getId() + "," + c.getName() + "\n");
         }
+<<<<<<< HEAD
      writer.close();
      } catch (IOException e) {
         showAlert("Error", "Error updating file!");
@@ -203,6 +265,22 @@ public class CategoriesController implements Initializable {
         if (!file.exists())
             return;
       BufferedReader reader = new BufferedReader(new FileReader(file));
+=======
+
+        writer.close();
+
+    } catch (IOException e) {
+        showAlert("Error", "Error updating file!");
+    }
+}
+    private void setNextId() {
+    try {
+        File file = new File("src/financtracker/categories.txt");
+
+        if (!file.exists()) return;
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         String line;
         int lastId = 0;
 
@@ -222,6 +300,7 @@ public class CategoriesController implements Initializable {
         e.printStackTrace();
     }
 }
+<<<<<<< HEAD
 private void sortAndReindex() {
 
     categoryList.sort(
@@ -235,6 +314,9 @@ private void sortAndReindex() {
     tableCategories.refresh();
     updateFile();
 }
+=======
+
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     
     
 }

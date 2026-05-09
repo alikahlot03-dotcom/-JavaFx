@@ -60,9 +60,16 @@ public class LoginController implements Initializable {
          alert.setTitle("Fieled");
          alert.setHeaderText(null);
          alert.setContentText("Please fill all fields!"); 
+<<<<<<< HEAD
          alert.getDialogPane().getStylesheets().add(
          getClass().getResource("/css/styleProject.css").toExternalForm());
          alert.show();
+=======
+         
+         alert.getDialogPane().getStylesheets().add(
+           getClass().getResource("/css/styleProject.css").toExternalForm());
+    alert.show();
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     return;
 }
    
@@ -71,9 +78,13 @@ public class LoginController implements Initializable {
    String hashPassword = psswordHash.hashPassword(textFieldPassword.getText());
    
    boolean found = false;
+<<<<<<< HEAD
     try (
             Scanner scanner = new Scanner(new File("Document/User.txt")))
     {
+=======
+    try (Scanner scanner = new Scanner(new File("Document/User.txt"))) {
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] data = line.split(","); // تقسيم السطر بالفاصلة
@@ -95,9 +106,18 @@ public class LoginController implements Initializable {
     if (found) {
         Alert success = new Alert(Alert.AlertType.INFORMATION);
         success.setContentText("Login Successful! Welcome.");
+<<<<<<< HEAD
         success.getDialogPane().getStyleClass().add("alert-success");
         success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
              success.showAndWait();
+=======
+        
+        success.getDialogPane().getStyleClass().add("alert-success");
+        success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
+//        success.show();
+             success.showAndWait();
+              //هين رح احط الانتقال الي الداش بورد
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
               
               Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -148,5 +168,9 @@ public class LoginController implements Initializable {
 
     
 
+<<<<<<< HEAD
     
 
+=======
+    
+>>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
