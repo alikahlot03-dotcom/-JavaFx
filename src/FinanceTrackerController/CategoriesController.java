@@ -300,9 +300,7 @@ public class CategoriesController implements Initializable {
         sortAndReindex();
 
         
-        // Save category into file
-        saveToFile(category);
-
+       
         
         // Clear text field
         txtCategoryName.clear();

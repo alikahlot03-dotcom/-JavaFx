@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,8 +35,8 @@ public class TransactionsController {
     @FXML private TableColumn<Transaction, LocalDate> dateColumn;
 
     private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
-    private final String TRANSACTIONS_FILE = "transactions.txt";
-    private final String CATEGORIES_FILE = "categories.txt";
+    private final String TRANSACTIONS_FILE = "Document/transactions.txt";
+    private final String CATEGORIES_FILE = "Document/categories.txt";
 
     @FXML
     public void initialize() {
@@ -59,12 +60,30 @@ public class TransactionsController {
     }
 
     private void loadCategories() {
-        try (Stream<String> lines = Files.lines(Paths.get(CATEGORIES_FILE))) {
-            categoryComboBox.setItems(FXCollections.observableArrayList(lines.collect(Collectors.toList())));
-        } catch (IOException e) {
-            System.err.println("Error loading categories: " + e.getMessage());
-        }
+
+    try (Stream<String> lines =
+                 Files.lines(Paths.get(CATEGORIES_FILE))) {
+
+        List<String> categories = lines
+
+                .filter(line -> !line.trim().isEmpty())
+
+                .map(line -> line.split(",")[1].trim())
+
+                .collect(Collectors.toList());
+
+        categoryComboBox.setItems(
+                FXCollections.observableArrayList(categories)
+        );
+
+    } catch (IOException e) {
+
+        System.err.println(
+                "Error loading categories: "
+                        + e.getMessage()
+        );
     }
+}
 
     private void loadTransactions() {
         if (!Files.exists(Paths.get(TRANSACTIONS_FILE))) return;
