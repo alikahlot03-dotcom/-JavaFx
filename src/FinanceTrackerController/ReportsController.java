@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package FinanceTrackerController;
 
 import java.io.BufferedReader;
@@ -12,40 +11,32 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
-=======
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
-package FinanceTrackerController;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-<<<<<<< HEAD
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import model.Transaction;
 
-=======
+/*
+    هذا الكلاس مسؤول عن صفحة التقارير Reports
+    
+    وظيفته:
+    - قراءة العمليات المالية من الملف
+    - عرضها داخل الجدول
+    - حساب:
+        مجموع الدخل Income
+        مجموع المصروف Expense
+        الرصيد النهائي Balance
+*/
 
-/**
- * FXML Controller class
- *
- * @author msi
- */
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 public class ReportsController implements Initializable {
 
+    
+    // Labels لعرض القيم النهائية
     @FXML
     private Label lblIncome;
-<<<<<<< HEAD
 
     @FXML
     private Label lblExpense;
@@ -53,12 +44,15 @@ public class ReportsController implements Initializable {
     @FXML
     private Label lblBalance;
 
+    
+    
+    // TableView لعرض العمليات المالية
     @FXML
     private TableView<Transaction> tableTransactions;
 
-    //  تعديل جديد:
-    // غيرنا Category -> Transaction
-    // لأن الجدول يعرض عمليات مالية مش تصنيفات
+    
+    
+    // أعمدة الجدول
     @FXML
     private TableColumn<Transaction, Integer> colId;
 
@@ -72,17 +66,27 @@ public class ReportsController implements Initializable {
     private TableColumn<Transaction, String> colType;
 
     
-    //  تعديل جديد مهم:
-    // خزنا البيانات داخل ObservableList
-    // عشان نستخدمها بالجدول + بالحسابات + بالStreams
+    
+    /*
+        ObservableList
+        
+        استخدمناها لتخزين البيانات بشكل ديناميكي
+        بحيث أي تغيير على البيانات يظهر مباشرة داخل الجدول
+    */
     private ObservableList<Transaction> transactionList =
             FXCollections.observableArrayList();
 
     
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // ربط أعمدة الجدول مع بيانات Transaction
+        /*
+            ربط أعمدة الجدول مع بيانات كلاس Transaction
+            
+            مثلًا:
+            عمود ID يأخذ القيمة من getId()
+        */
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         colName.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -92,20 +96,26 @@ public class ReportsController implements Initializable {
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         
-        // تحميل البيانات من الملف
+        
+        // تحميل العمليات من الملف
         loadTransactions();
 
         
-        // حساب التقرير
+        // حساب التقرير المالي
         calculateReport();
     }
 
     
     
-    //  تحميل العمليات من الملف
+    
+    /*
+        هذه الدالة تقرأ البيانات من ملف transactions.txt
+        ثم تحول كل سطر إلى object من نوع Transaction
+    */
     void loadTransactions() {
 
-        // تنظيف الليست قبل التحميل
+        
+        // تنظيف الليست قبل إعادة التحميل
         transactionList.clear();
 
         try {
@@ -116,19 +126,28 @@ public class ReportsController implements Initializable {
 
             String line;
 
+            
+            // قراءة الملف سطر سطر
             while ((line = reader.readLine()) != null) {
 
-                // تجاهل الأسطر الفاضية
+                
+                // تجاهل الأسطر الفارغة
                 if (line.trim().isEmpty()) {
                     continue;
                 }
 
                 
-                // تقسيم السطر باستخدام الفاصلة
+                /*
+                    تقسيم السطر باستخدام الفاصلة
+                    
+                    مثال:
+                    1,Food,50,Expense,2025-08-01
+                */
                 String[] parts = line.split(",");
 
                 
-                // إنشاء object من نوع Transaction
+                
+                // إنشاء object جديد من Transaction
                 transactionList.add(new Transaction(
 
                         Integer.parseInt(parts[0].trim()),
@@ -151,31 +170,46 @@ public class ReportsController implements Initializable {
         }
 
         
+        
         // عرض البيانات داخل الجدول
         tableTransactions.setItems(transactionList);
     }
 
     
     
-    //  حساب التقرير باستخدام Streams
+    
+    /*
+        هذه الدالة مسؤولة عن حساب التقرير
+        
+        استخدمنا Java Streams
+        لحساب مجموع الدخل والمصروف بشكل احترافي
+    */
     void calculateReport() {
 
         
-        // حساب مجموع الـ Income
+        
+        /*
+            حساب مجموع الـ Income
+            
+            الخطوات:
+            1- فلترة العمليات من نوع Income
+            2- استخراج قيمة amount
+            3- جمع القيم
+        */
         double totalIncome = transactionList.stream()
 
-                // فلترة العمليات من نوع Income
                 .filter(t -> t.getType().equalsIgnoreCase("Income"))
 
-                // تحويل العمليات إلى أرقام amount
                 .mapToDouble(Transaction::getAmount)
 
-                // جمعهم
                 .sum();
 
         
         
-        // حساب مجموع الـ Expense
+        
+        /*
+            حساب مجموع الـ Expense بنفس الطريقة
+        */
         double totalExpense = transactionList.stream()
 
                 .filter(t -> t.getType().equalsIgnoreCase("Expense"))
@@ -186,9 +220,11 @@ public class ReportsController implements Initializable {
 
         
         
+        
         // حساب الرصيد النهائي
         double balance = totalIncome - totalExpense;
 
+        
         
         
         // عرض النتائج داخل الـ Labels
@@ -198,82 +234,4 @@ public class ReportsController implements Initializable {
 
         lblBalance.setText(String.valueOf(balance));
     }
-=======
-    @FXML
-    private Label lblExpense;
-    @FXML
-    private Label lblBalance;
-    @FXML
-    private TableView<?> tableTransactions;
-    @FXML
-    private TableColumn<Category, Integer> colId ;
-    @FXML
-    private TableColumn<Category, String> colName;
-    @FXML
-    private TableColumn<?, ?> colAmount;
-    @FXML
-    private TableColumn<?, ?> colType;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //هادي استبدلوها ب  calculateReport() ;
-         showDummyData(); 
-    }
-    //طبعا هادي دالة مبدئية عشان مش عندي كود الترانزاكشن استبدلوها بالدالة التي بالاسفل 
-      private void showDummyData() {
-
-        double totalIncome = 500;
-        double totalExpense = 150;
-        double balance = totalIncome - totalExpense;
-
-        lblIncome.setText("" + totalIncome);
-        lblExpense.setText("" + totalExpense);
-        lblBalance.setText("" + balance);
-    }
-      /*
-      private void calculateReport() {
-    double totalIncome = 0;
-    double totalExpense = 0;
-
-    try {
-        BufferedReader reader = new BufferedReader(
-            new FileReader("حطو هان مسار transaction.txt")
-        );
-
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-
-            if (line.trim().isEmpty()) continue;
-
-            String[] parts = line.split(",");
-
-            double amount = Double.parseDouble(parts[2]);
-            String type = parts[3];
-
-            if (type.equalsIgnoreCase("Income")) {
-                totalIncome += amount;
-            } else {
-                totalExpense += amount;
-            }
-        }
-
-        reader.close();
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    double balance = totalIncome - totalExpense;
-
-    lblIncome.setText("" + totalIncome);
-    lblExpense.setText("" + totalExpense);
-    lblBalance.setText("" + balance);
-}
-      */
-      
-   
-    
-    
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 }

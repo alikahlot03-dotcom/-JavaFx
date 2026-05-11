@@ -30,7 +30,11 @@
                   <Button fx:id="btnDelete" onAction="#handleDeleteCategory" styleClass="danger-button" text="Delete Selected" />
                </children>
             </HBox>
-
+                <TextField fx:id="txtSearch"
+           promptText="Search category..."
+           styleClass="text-field"
+                           maxWidth="Infinity" />
+         
             <TableView fx:id="tableCategories" prefHeight="250.0" styleClass="table-view" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="colId" prefWidth="100.0" text="ID" />

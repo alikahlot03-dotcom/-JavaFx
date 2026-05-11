@@ -1,11 +1,42 @@
 
 .root {
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
     -fx-background-color: linear-gradient(to bottom right, #3498db, #8e44ad); 
+    -fx-font-smoothing-type: gray;
 }
 
+/* Typography Hierarchy - Integrated into old style */
+.header-text {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2c3e50;
+    -fx-letter-spacing: 0.5px;
+    -fx-padding: 5px;
+}
 
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
 
+.label {
+    -fx-text-fill: #34495e;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.secondary-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.label-hint {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+}
+
+/* Containers from your code */
 .login-container {
     -fx-background-color: white;
     -fx-background-radius: 20px;          
@@ -26,34 +57,16 @@
     -fx-alignment: center;
 }
 
-
-
-.label {
-    -fx-text-fill: #555555;
-    -fx-font-size: 13px;
-    -fx-padding: 0px 0px 5px 0px;
-    -fx-font-family: "Segoe UI Semilight";
-}
-
-.header-text {
-    -fx-text-alignment: left; 
-    -fx-font-size: 25px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
-    -fx-padding: 5px;
-}
-
-
+/* Form Elements */
 .text-field {
     -fx-background-color: white;
     -fx-background-radius: 5px;
     -fx-border-color: #dcdde1;
     -fx-border-radius: 5px;
     -fx-padding: 10px;
-    -fx-pref-width: 300px;
     -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
-
 
 .text-field:focused {
     -fx-border-color: #00d2ff;
@@ -62,11 +75,9 @@
     -fx-border-width: 2px;
 }
 
-
+/* Buttons from your code */
 #btn {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
--fx-background-color: #8e44ad;
+    -fx-background-color: #8e44ad;
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -75,26 +86,14 @@
     -fx-cursor: hand;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
     -fx-pref-width: 250px;
-     -fx-pref-height: 45px;
+    -fx-pref-height: 45px;
 }
-
-
 
 #btn:hover {
-
--fx-background-color: #732d91;
+    -fx-background-color: #732d91;
 }
 
-
-.label-hint {
-    -fx-text-fill: #e74c3c;
-    -fx-font-size: 11px;
-    -fx-text-alignment: left;
-    -fx-alignment: center-left; 
-/*     -fx-max-width: 300px; */
-}
-
-
+/* Utils and Account */
 .account {
     -fx-padding: 30px 0 0 0;
 }
@@ -105,181 +104,13 @@
     -fx-cursor: hand;
     -fx-padding: 0px 0px 5px 0px;
 }
+
 #createAccount:hover {
     -fx-underline: true;
     -fx-text-fill:#fd79a8;
 }
 
-
-/* ===========================
-   CARD STYLE
-=========================== */
-.card {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-padding: 20;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
-}
-
-/* ===========================
-   LABELS
-=========================== */
-.header-label {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
-}
-
-.secondary-label {
-    -fx-font-size: 13px;
-    -fx-text-fill: #7f8c8d;
-}
-
-/* ===========================
-   TEXT FIELDS
-=========================== */
-.text-field {
-    -fx-background-color: #f8f9fb;
-    -fx-border-color: #dcdde1;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-padding: 8 10;
-}
-
-.text-field:focused {
-    -fx-border-color: #3498db;
-    -fx-background-color: white;
-}
-
-/* ===========================
-   COMBO BOX
-=========================== */
-.combo-box {
-    -fx-background-color: #f8f9fb;
-    -fx-border-color: #dcdde1;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-}
-
-.combo-box:focused {
-    -fx-border-color: #3498db;
-}
-
-/* ===========================
-   DATE PICKER
-=========================== */
-.date-picker {
-    -fx-background-color: #f8f9fb;
-    -fx-border-color: #dcdde1;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-}
-
-/* ===========================
-   BUTTONS
-=========================== */
-.primary-button {
-    -fx-background-color: linear-gradient(to right, #3498db, #2980b9);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-padding: 8 16;
-    -fx-cursor: hand;
-}
-
-.primary-button:hover {
-    -fx-background-color: linear-gradient(to right, #2980b9, #2471a3);
-}
-
-.primary-button:pressed {
-    -fx-scale-x: 0.97;
-    -fx-scale-y: 0.97;
-}
-
-/* ===========================
-   TABLE VIEW
-=========================== */
-.table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: #ecf0f1;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-}
-
-/* Header */
-.table-view .column-header-background {
-    -fx-background-color: #f1f3f6;
-    -fx-background-radius: 10 10 0 0;
-}
-
-.table-view .column-header {
-    -fx-border-color: transparent;
-}
-
-.table-view .label {
-    -fx-text-fill: #2c3e50;
-    -fx-font-weight: bold;
-}
-
-/* Rows */
-.table-row-cell {
-    -fx-background-color: white;
-}
-
-.table-row-cell:odd {
-    -fx-background-color: #fafbfc;
-}
-
-.table-row-cell:hover {
-    -fx-background-color: #eaf2f8;
-}
-
-.table-row-cell:selected {
-    -fx-background-color: #d6eaf8;
-}
-
-/* Cells */
-.table-cell {
-    -fx-padding: 10;
-    -fx-text-fill: #2c3e50;
-}
-
-/* Placeholder */
-.table-view .placeholder .label {
-    -fx-text-fill: #95a5a6;
-}
-
-/* ===========================
-   SCROLLBAR
-=========================== */
-.scroll-bar:vertical,
-.scroll-bar:horizontal {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar .thumb {
-    -fx-background-color: #dcdde1;
-    -fx-background-radius: 5;
-}
-
-/* ===========================
-   SPACING IMPROVEMENT
-=========================== */
-.grid-pane {
-    -fx-padding: 10 0 10 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* تنسيق الحاوية الكلية للتنبيه */
+/* Alerts from your code */
 .alert.dialog-pane {
     -fx-background-color: linear-gradient(to bottom right, #3498db, #8e44ad);
     -fx-border-color: white;
@@ -287,36 +118,21 @@
     -fx-padding: 10px;
 }
 
-/* تنسيق النص الداخلي ليتوسط التنبيه */
 .alert.dialog-pane .content.label {
     -fx-font-weight: bold;
     -fx-font-size: 15px;
     -fx-text-fill: white;
-    -fx-alignment: center; /* توسيط النص */
+    -fx-alignment: center;
     -fx-text-alignment: center;
-    -fx-padding: 10 0 0 0; /* إعطاء مساحة علوية بسيطة ليبتعد عن الحافة */
-     
+    -fx-padding: 10 0 0 0;
 }
 
-/* لتوسيط الأيقونة مع النص */
-.alert.dialog-pane .graphic-container {
-    -fx-padding: 10px;
-     
-}
-
-
-
-
-
-
-/* تنسيق الحاوية الكلية لتنبيه النجاح */
 .alert-success.dialog-pane {
-    -fx-background-color: linear-gradient(to bottom right, #2ecc71, #27ae60); /* تدرج أخضر مريح للعين */
+    -fx-background-color: linear-gradient(to bottom right, #2ecc71, #27ae60);
     -fx-border-color: white;
     -fx-border-width: 2px;
 }
 
-/* تنسيق النص الداخلي لرسالة النجاح */
 .alert-success.dialog-pane .content.label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -324,96 +140,79 @@
     -fx-font-size: 18px;
 }
 
-/* تنسيق زر الـ OK ليبدو متناسقاً مع الخلفية الخضراء */
 .alert-success.dialog-pane .button {
     -fx-background-color: white;
     -fx-text-fill: #27ae60;
     -fx-font-weight: bold;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif
 }
-/*
 
- ===== ROOT (نفس ستايلك) ===== 
-*/.root {
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-background-color: linear-gradient(to bottom right, #3498db, #8e44ad);
-}/*
-
- ===== SIDEBAR ===== */
+/* Dashboard UI Classes - Adapted to match your color scheme */
 .sidebar-container {
-    -fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e);
-    -fx-background-radius: 0 20 20 0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 5, 0);
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
 }
 
-/* ===== أزرار القائمة ===== */
 .sidebar-container .button {
     -fx-background-color: transparent;
-    -fx-text-fill: #ecf0f1;
-    -fx-font-size: 14px;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 12px 10px;
-    -fx-cursor: hand;
-    -fx-background-radius: 10px;
-}
-
-/* Hover */
-.sidebar-container .button:hover {
-    -fx-background-color: rgba(255,255,255,0.1);
-}
-
-/* الزر النشط */
-.active-nav {
-    -fx-background-color: #8e44ad;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-alignment: center-left;
+    -fx-padding: 12px 20px;
 }
 
-/* Logout زر */
-#logoutBtn {
-    -fx-text-fill: #e74c3c;
+.sidebar-container .button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ===== CARD ===== */
+.sidebar-container .active-nav {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-font-weight: 800;
+}
+
 .card {
     -fx-background-color: white;
-    -fx-background-radius: 20px;
-    -fx-padding: 30px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 20, 0, 0, 10);
+    -fx-background-radius: 15px;
+    -fx-padding: 25px;
+    -fx-spacing: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
 
-/* ===== HEADER TEXT ===== */
-.header-label {
-    -fx-font-size: 24px;
+.primary-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
 }
 
-/* ===== SECONDARY TEXT ===== */
-.secondary-label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #7f8c8d;
+.primary-button:hover {
+    -fx-background-color: #2980b9;
 }
 
-/* ===== عام للأزرار ===== */
-.button {
-    -fx-background-radius: 10px;
+.danger-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
 }
 
-/* ===== تحسين التباعد ===== */
-.label {
-    -fx-font-family: "Segoe UI";
+.danger-button:hover {
+    -fx-background-color: #c0392b;
 }
 
-.search-field {
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-padding: 8 10 8 35;
+.table-view {
     -fx-background-color: white;
-    -fx-border-color: #ccc;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8px;
+}
 
-    -fx-background-image: url("/css/search.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: 16px 16px; 
-    -fx-background-position: left 10 center;
+.table-view .column-header .label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7f8c8d;
+    -fx-text-transform: uppercase;
 }

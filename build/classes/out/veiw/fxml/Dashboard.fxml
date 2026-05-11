@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
+    <top>
+        <VBox alignment="CENTER" spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label fx:id="welcomeLabel" text="Welcome!" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        </VBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="15">
+            <Button text="Categories" onAction="#handleNavigation" prefWidth="150"/>
+            <Button text="Transactions" onAction="#handleNavigation" prefWidth="150"/>
+            <Button text="Reports" onAction="#handleNavigation" prefWidth="150"/>
+            <Button text="Logout" onAction="#handleNavigation" prefWidth="150"/>
+        </VBox>
+    </center>
+</BorderPane>

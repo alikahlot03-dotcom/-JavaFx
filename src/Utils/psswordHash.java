@@ -34,8 +34,3 @@ public class psswordHash {
     }
 
     
-    
-<<<<<<< HEAD
-
-=======
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd

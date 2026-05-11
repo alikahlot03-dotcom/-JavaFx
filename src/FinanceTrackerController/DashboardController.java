@@ -10,12 +10,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
 
 /**
  * Combined Controller for the Dashboard.
@@ -23,37 +20,23 @@ import javafx.geometry.Insets;
  */
 public class DashboardController {
 
-<<<<<<< HEAD
-    @FXML private BorderPane mainPane;
-    @FXML private Label welcomeLabel;
-=======
 
     @FXML private BorderPane mainPane;
     @FXML private Label welcomeLabel;
 
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     @FXML private Button dashboardBtn;
     @FXML private Button categoriesBtn;
     @FXML private Button transactionsBtn;
     @FXML private Button reportsBtn;
     @FXML private Button logoutBtn;
 
-<<<<<<< HEAD
-=======
     @FXML
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
     public void initialize() {
         // Default Welcome Message
         if (welcomeLabel != null) {
             welcomeLabel.setText("Welcome Back, User!");
         }
 
-<<<<<<< HEAD
-        // Navigation Bindings
-        dashboardBtn.setOnAction(event -> {
-            handleNavigation("Overview");
-            setActive(dashboardBtn);
-=======
         dashboardBtn.setOnAction(event -> {
             try {
                 // To go back to dashboard overview, we just reload the dashboard center
@@ -66,29 +49,20 @@ public class DashboardController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         });
         
         categoriesBtn.setOnAction(event -> {
             handleNavigation("Categories");
             setActive(categoriesBtn);
         });
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         transactionsBtn.setOnAction(event -> {
             handleNavigation("Transactions");
             setActive(transactionsBtn);
         });
         
         reportsBtn.setOnAction(event -> {
-<<<<<<< HEAD
-            handleNavigation("reports");
-=======
             handleNavigation("Reports");
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
             setActive(reportsBtn);
         });
 
@@ -101,19 +75,6 @@ public class DashboardController {
         });
     }
 
-<<<<<<< HEAD
-    private void handleNavigation(String targetPage) {
-        try {
-            System.out.println("Switching to: " + targetPage);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/" + targetPage + ".fxml"));
-            Parent root = loader.load();
-            mainPane.setCenter(root);
-            root.getStylesheets().add(
-           getClass().getResource("/css/styleProject.css").toExternalForm());
-          
-        } catch (IOException e) {
-            System.err.println("Failed to load: " + targetPage);
-=======
     private javafx.scene.Node createWelcomeView() {
         try {
             // Load the initial welcome state
@@ -151,7 +112,6 @@ public class DashboardController {
             mainPane.setCenter(root);
         } catch (IOException e) {
             System.err.println("Failed to load: " + targetPage + " at /view/" + targetPage + ".fxml");
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
             e.printStackTrace();
         }
     }
@@ -177,11 +137,7 @@ public class DashboardController {
             System.err.println("Could not load CSS during logout");
         }
         stage.setScene(scene);
-<<<<<<< HEAD
-        stage.titleProperty().set("Finance Tracker - Login");
-=======
         stage.setTitle("Finance Tracker - Login");
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
         stage.show();
     }
 }

@@ -6,128 +6,236 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<<<<<<< HEAD
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../css/styleProject.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.SignUpController">
-=======
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<AnchorPane id="AnchorPane"
+            prefHeight="700.0"
+            prefWidth="1000.0"
+            stylesheets="@../css/styleProject.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="FinanceTrackerController.SignUpController">
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" stylesheets="@../css/styleProject.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FinanceTrackerController.SignUpController">
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
-   <children>
-      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="600.0" prefWidth="600.0" StackPane.alignment="CENTER">
-               <children>
-                  <VBox alignment="CENTER" maxWidth="350.0" prefHeight="421.0" prefWidth="600.0" spacing="30.0" styleClass="signUp-container">
-                     <padding>
-                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-                     </padding>
-                     <children>
-                        <VBox alignment="TOP_CENTER">
-                           <children>
-                              <Label alignment="TOP_CENTER" styleClass="header-text" text="Create New Account" />
-                              <Label alignment="TOP_CENTER" text="Fill the information below to Sign up">
-                                 <VBox.margin>
-                                    <Insets top="-5.0" />
-                                 </VBox.margin>
-                              </Label>
-                           </children>
+    <children>
+
+        <StackPane AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0">
+
+            <children>
+
+                <VBox alignment="CENTER"
+                      prefHeight="600.0"
+                      prefWidth="600.0"
+                      StackPane.alignment="CENTER">
+
+                    <children>
+
+                        <VBox alignment="CENTER"
+                              maxWidth="350.0"
+                              prefHeight="421.0"
+                              prefWidth="600.0"
+                              spacing="30.0"
+                              styleClass="signUp-container">
+
+                            <padding>
+                                <Insets top="40.0"
+                                        right="40.0"
+                                        bottom="40.0"
+                                        left="40.0" />
+                            </padding>
+
+                            <children>
+
+                                <VBox alignment="TOP_CENTER">
+
+                                    <children>
+
+                                        <Label alignment="TOP_CENTER"
+                                               styleClass="header-text"
+                                               text="Create New Account" />
+
+                                        <Label alignment="TOP_CENTER"
+                                               text="Fill the information below to Sign up">
+
+                                            <VBox.margin>
+                                                <Insets top="-5.0" />
+                                            </VBox.margin>
+
+                                        </Label>
+
+                                    </children>
+
+                                </VBox>
+
+                                <TextField fx:id="textFieldFirstName"
+                                           maxWidth="280.0"
+                                           prefWidth="280.0"
+                                           promptText="First Name"
+                                           styleClass="text-field">
+
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+
+                                </TextField>
+
+                                <Label fx:id="labelHintFirstName"
+                                       alignment="TOP_LEFT"
+                                       maxWidth="300.0"
+                                       styleClass="label-hint">
+
+                                    <VBox.margin>
+                                        <Insets top="-21.0" />
+                                    </VBox.margin>
+
+                                </Label>
+
+                                <TextField fx:id="textFieldLastName"
+                                           maxWidth="280.0"
+                                           prefWidth="280.0"
+                                           promptText="Last Name"
+                                           styleClass="text-field">
+
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+
+                                </TextField>
+
+                                <Label fx:id="labelHintLastName"
+                                       alignment="TOP_LEFT"
+                                       maxWidth="300.0"
+                                       styleClass="label-hint">
+
+                                    <VBox.margin>
+                                        <Insets top="-21.0" />
+                                    </VBox.margin>
+
+                                </Label>
+
+                                <TextField fx:id="textFieldEmail"
+                                           maxWidth="280.0"
+                                           prefWidth="280.0"
+                                           promptText="Email"
+                                           styleClass="text-field">
+
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+
+                                </TextField>
+
+                                <Label fx:id="labelHintEmail"
+                                       alignment="TOP_LEFT"
+                                       maxWidth="300.0"
+                                       styleClass="label-hint">
+
+                                    <VBox.margin>
+                                        <Insets top="-21.0" />
+                                    </VBox.margin>
+
+                                </Label>
+
+                                <PasswordField fx:id="textFieldPassword"
+                                               maxWidth="280.0"
+                                               prefWidth="280.0"
+                                               promptText="Password"
+                                               styleClass="text-field">
+
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+
+                                </PasswordField>
+
+                                <Label fx:id="labelHintPassword"
+                                       alignment="TOP_LEFT"
+                                       maxWidth="300.0"
+                                       styleClass="label-hint">
+
+                                    <VBox.margin>
+                                        <Insets top="-21.0" />
+                                    </VBox.margin>
+
+                                </Label>
+
+                                <PasswordField fx:id="textFeildConfirmPassword"
+                                               maxWidth="280.0"
+                                               prefWidth="280.0"
+                                               promptText="Confirm Password"
+                                               styleClass="text-field">
+
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+
+                                </PasswordField>
+
+                                <Label fx:id="labelHIntConfirmPassword"
+                                       alignment="TOP_LEFT"
+                                       maxWidth="300.0"
+                                       styleClass="label-hint">
+
+                                    <VBox.margin>
+                                        <Insets top="-21.0" />
+                                    </VBox.margin>
+
+                                </Label>
+
+                                <Button id="btn"
+                                        fx:id="btnSignUp"
+                                        mnemonicParsing="false"
+                                        onAction="#SignupHandler"
+                                        text="Sign Up">
+
+                                    <VBox.margin>
+                                        <Insets left="15.0"
+                                                right="15.0" />
+                                    </VBox.margin>
+
+                                </Button>
+
+                                <HBox alignment="CENTER"
+                                      spacing="5.0">
+
+                                    <children>
+
+                                        <Label text="Already have an account?? " />
+
+                                        <Label id="createAccount"
+                                               fx:id="LoginNow"
+                                               onMouseClicked="#onLoginClick"
+                                               text="Login Now" />
+
+                                    </children>
+
+                                    <padding>
+                                        <Insets top="5.0" />
+                                    </padding>
+
+                                </HBox>
+
+                            </children>
+
                         </VBox>
-                        <TextField fx:id="textFieldFirstName" maxWidth="280.0" prefWidth="280.0" promptText="First Name" styleClass="text-field">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label fx:id="labelHintFirstName" alignment="TOP_LEFT" maxWidth="300.0" styleClass="label-hint">
-                           <VBox.margin>
-                              <Insets top="-21.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="textFieldLastName" maxWidth="280.0" prefWidth="280.0" promptText="Last Name" styleClass="text-field">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label fx:id="labelHintLastName" alignment="TOP_LEFT" maxWidth="300.0" styleClass="label-hint">
-                           <VBox.margin>
-                              <Insets top="-21.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="textFieldEmail" maxWidth="280.0" prefWidth="280.0" promptText="Email" styleClass="text-field">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <Label fx:id="labelHintEmail" alignment="TOP_LEFT" maxWidth="300.0" styleClass="label-hint">
-                           <VBox.margin>
-                              <Insets top="-21.0" />
-                           </VBox.margin>
-                        </Label>
-                        <PasswordField fx:id="textFieldPassword" maxWidth="280.0" prefWidth="280.0" promptText="password" styleClass="text-field">
-                           <VBox.margin>
-                              <Insets bottom="15.0" />
-                           </VBox.margin>
-                        </PasswordField>
-                        <Label fx:id="labelHintPassword" alignment="TOP_LEFT" maxWidth="300.0" styleClass="label-hint">
-                           <VBox.margin>
-                              <Insets top="-21.0" />
-                           </VBox.margin>
-                        </Label>
-                        <PasswordField fx:id="textFeildConfirmPassword" maxWidth="280.0" prefWidth="280.0" promptText="Confirm Password" styleClass="text-field">
-                           <VBox.margin>
-<<<<<<< HEAD
-                              <Insets bottom="10.0" />
-=======
-                              <Insets bottom="20.0" />
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
-                           </VBox.margin>
-                        </PasswordField>
-                        <Label fx:id="labelHIntConfirmPassword" alignment="TOP_LEFT" maxWidth="300.0" styleClass="label-hint">
-                           <VBox.margin>
-                              <Insets top="-21.0" />
-                           </VBox.margin>
-                        </Label>
-<<<<<<< HEAD
-                        <Button id="btn" fx:id="btnSignUp" mnemonicParsing="false" onAction="#SignupHandler" text="Sign Up">
-                           <VBox.margin>
-                              <Insets left="15.0" right="15.0" />
-                           </VBox.margin></Button>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-                           <children>
-                              <Label text="Already have an account?? " />
-                              <Label id="createAccount" fx:id="LoginNow" onMouseClicked="#onLoginClick" text="Login Now" />
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-=======
-                        <Button id="btn" fx:id="btnSignUp" mnemonicParsing="false" onAction="#SignupHandler" text="Sign Up" />
-                     </children>
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="50.0" top="50.0" />
-         </padding>
-      </StackPane>
-   </children>
-<<<<<<< HEAD
+
+                    </children>
+
+                </VBox>
+
+            </children>
+
+            <padding>
+                <Insets top="50.0"
+                        bottom="50.0" />
+            </padding>
+
+        </StackPane>
+
+    </children>
+
 </AnchorPane>
-=======
-</AnchorPane>
->>>>>>> e98cf67381ea005d1e0a268478373fdda18961bd
