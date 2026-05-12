@@ -10,6 +10,14 @@ package model;
  * @author hp
  */
 public class User {
+
+  
+    public User(String email, String passwordHash) {
+
+    this.email = email;
+
+    this.passwordHash = passwordHash;
+}
     private int id;
     private String firstName;
     private String lastName;

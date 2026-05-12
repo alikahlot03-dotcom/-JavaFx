@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import javafx.event.ActionEvent;
@@ -27,6 +29,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
 
 /**
  * FXML Controller class
@@ -50,7 +53,25 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        loginButton.setOnAction(event -> {
+        try {
+            // استدعاء ميثود المعالجة اللي أنت عاملها أصلاً
+            EventHandler(event); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    });
+        
+        createAccount.setOnMouseClicked(event -> {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/SignUp.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    });
     }    
 
     @FXML
@@ -60,10 +81,9 @@ public class LoginController implements Initializable {
          alert.setTitle("Fieled");
          alert.setHeaderText(null);
          alert.setContentText("Please fill all fields!"); 
-         
          alert.getDialogPane().getStylesheets().add(
-           getClass().getResource("/css/styleProject.css").toExternalForm());
-    alert.show();
+         getClass().getResource("/css/styleProject.css").toExternalForm());
+         alert.show();
     return;
 }
    
@@ -71,43 +91,88 @@ public class LoginController implements Initializable {
    String password = textFieldPassword.getText().trim();
    String hashPassword = psswordHash.hashPassword(textFieldPassword.getText());
    
-   boolean found = false;
-    try (Scanner scanner = new Scanner(new File("Document/User.txt"))) {
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            String[] data = line.split(","); // تقسيم السطر بالفاصلة
-            
-           //هين تاكد ان الملف يختوي على خمس معلومات وتحت كاتب انه يقرا ويتحقق منالاندكس الرابع والخامس ويشوف هل موجودين في الملف النصي ام لا وهو نتاج عملية ساين اب  
-           //
-            if (data.length >= 5) {
-                if (data[3].trim().equals(email) && data[4].trim().equals(hashPassword)) {
-                    found = true;
-                    break;
-                }
+//   boolean found = false;
+//    try (
+//            Scanner scanner = new Scanner(new File("Document/User.txt")))
+//    {
+//        while (scanner.hasNextLine()) {
+//            String line = scanner.nextLine();
+//            String[] data = line.split(","); // تقسيم السطر بالفاصلة
+//            
+//           //هين تاكد ان الملف يختوي على خمس معلومات وتحت كاتب انه يقرا ويتحقق منالاندكس الرابع والخامس ويشوف هل موجودين في الملف النصي ام لا وهو نتاج عملية ساين اب  
+//           //
+//            if (data.length >= 5) {
+//                if (data[3].trim().equals(email) && data[4].trim().equals(hashPassword)) {
+//                    found = true;
+//                    break;
+//                }
+//            }
+//        }
+//    } catch (FileNotFoundException e) {
+//        System.out.println("File not found!");
+//    }
+
+
+List<User> users = new ArrayList<>();
+try (Scanner scanner = new Scanner(new File("Document/User.txt"))) {
+    while (scanner.hasNextLine()) {
+        String[] data = scanner.nextLine().split(",");
+        if (data.length >= 5) {
+            users.add(new User(data[3].trim(), data[4].trim())); // إضافة الإيميل والباسورد المشفر
+        }
+    }
+}
+
+
+boolean found = users.stream()
+   .anyMatch(u -> 
+        u.getEmail() != null &&
+        u.getPasswordHash() != null &&
+        u.getEmail().equals(email) &&
+        u.getPasswordHash().equals(hashPassword)
+);
+
+//  
+//    if (found) {
+//        Alert success = new Alert(Alert.AlertType.INFORMATION);
+//        success.setContentText("Login Successful! Welcome.");
+//        success.getDialogPane().getStyleClass().add("alert-success");
+//        success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
+//             success.showAndWait();
+//              
+//              Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+//               Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//               stage.setScene(new Scene(root));
+//              stage.setTitle("Finance Tracker - Dashboard");
+//              stage.show();
+//            
+//    } 
+if (found) {
+    Alert success = new Alert(Alert.AlertType.INFORMATION);
+    success.setContentText("Login Successful! Welcome.");
+    success.getDialogPane().getStyleClass().add("alert-success");
+    success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
+
+    // --- هين بنستخدم اللامبدا ---
+    success.showAndWait().ifPresent(response -> {
+        if (response == javafx.scene.control.ButtonType.OK) {
+            try {
+                // كود الانتقال للداشبورد باستخدام FXMLLoader
+                Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Finance Tracker - Dashboard");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-    } catch (FileNotFoundException e) {
-        System.out.println("File not found!");
-    }
+    });
+    // ----------------------------------------------
+}
 
-  
-    if (found) {
-        Alert success = new Alert(Alert.AlertType.INFORMATION);
-        success.setContentText("Login Successful! Welcome.");
-        
-        success.getDialogPane().getStyleClass().add("alert-success");
-        success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-//        success.show();
-             success.showAndWait();
-              //هين رح احط الانتقال الي الداش بورد
-              
-              Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
-               Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-               stage.setScene(new Scene(root));
-              stage.setTitle("Finance Tracker - Dashboard");
-              stage.show();
-            
-    } else {
+
+else {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Login Failed");
         errorAlert.setContentText("Invalid email or password!");

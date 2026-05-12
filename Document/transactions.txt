@@ -1,3 +1,7 @@
 
 1,ASD,10.0,Income,2026-05-11
 2,DAS,5.0,Expense,2026-05-11
+3,DAS,85.0,Income,2026-05-11
+4,gem,70.0,Expense,2026-05-11
+5,gem,87.0,Expense,2026-05-11
+6,hrh,10.0,Income,2026-05-11
