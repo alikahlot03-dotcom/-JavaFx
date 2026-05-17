@@ -1,5 +1,6 @@
 package FinanceTrackerController;
-
+import Utils.Session;
+import java.sql.Connection;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +34,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 import model.Category;
+
+
+import Utils.DBConnection;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import static model.DataStore.loadTransactions;
 
 /**
  * Controller responsible for managing categories.
@@ -86,7 +94,7 @@ public class CategoriesController implements Initializable {
 
     
     // Counter used to generate IDs
-    private int idCounter = 1;
+   // private int idCounter = 1;
 
     
     
@@ -114,7 +122,7 @@ public class CategoriesController implements Initializable {
 
         
         // Set next available ID
-        setNextId();
+       // setNextId();
 
         
         // Sort categories alphabetically
@@ -127,83 +135,78 @@ public class CategoriesController implements Initializable {
      * Reads categories from categories.txt file
      * and stores them inside ObservableList
      */
-    private void loadCategories() {
+  private void loadCategories() {
 
-        categoryList.clear();
+    categoryList.clear();
 
-        try {
+    try {
 
-            BufferedReader reader = new BufferedReader(
-                    new FileReader("Document/categories.txt")
+        Connection con = DBConnection.connect();
+
+                 String query =
+               "SELECT * FROM Categories "
+               + "WHERE user_id=? "
+               + "ORDER BY name ASC";
+          
+        PreparedStatement ps =
+                con.prepareStatement(query);
+        
+        ps.setInt(1,
+        Session.currentUserId);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            categoryList.add(
+
+                    new Category(
+
+                            rs.getInt("id"),
+
+                            rs.getString("name")
+                    )
             );
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-
-                // Ignore empty lines
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-
-                
-                // Split line using comma
-                String[] parts = line.split(",");
-
-                
-                // Create Category object and add it to list
-                categoryList.add(
-                        new Category(
-                                Integer.parseInt(parts[0].trim()),
-                                parts[1].trim()
-                        )
-                );
-            }
-
-            reader.close();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
         }
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
+}
 
     
     
     /**
      * Handles searching categories using Java Streams
      */
-    private void searchCategory() {
+   private void searchCategory() {
 
-        String searchText = txtSearch.getText().toLowerCase();
+    String searchText =
+            txtSearch.getText().toLowerCase();
 
-        
-        // If search field is empty show all categories
-        if (searchText.isEmpty()) {
+    if (searchText.isEmpty()) {
 
-            tableCategories.setItems(categoryList);
+        tableCategories.setItems(categoryList);
 
-            return;
-        }
-
-        
-        // Filter categories using stream
-        List<Category> filtered = categoryList.stream()
-
-                .filter(c ->
-                        c.getName()
-                                .toLowerCase()
-                                .contains(searchText)
-                )
-
-                .toList();
-
-        
-        // Display filtered result in table
-        tableCategories.setItems(
-                FXCollections.observableArrayList(filtered)
-        );
+        return;
     }
+
+    List<Category> filteredList =
+
+            categoryList.stream()
+
+                    .filter(c -> c.getName()
+                            .toLowerCase()
+                            .contains(searchText))
+
+                    .toList();
+
+    tableCategories.setItems(
+
+            FXCollections.observableArrayList(filteredList)
+    );
+}
 
     
     
@@ -232,6 +235,7 @@ public class CategoriesController implements Initializable {
     /**
      * Saves newly added category into file
      */
+    /*
     private void saveToFile(Category category) {
 
         try {
@@ -256,95 +260,142 @@ public class CategoriesController implements Initializable {
         }
     }
 
-    
+    */
     
     /**
      * Handles adding new category
      */
-    @FXML
-    private void HandelButtonAdd(ActionEvent event) {
+   @FXML
+    void HandelButtonAdd(ActionEvent event) {
 
-        String name = txtCategoryName.getText();
+    String name = txtCategoryName.getText().trim();
 
-        
-        // Validation for empty field
-        if (name.isEmpty()) {
+    if (name.isEmpty()) {
 
-            showAlert("Error", "Category name is required!");
+        showAlert("Error",
+                "Category name cannot be empty!");
+
+        return;
+    }
+
+    try {
+
+        Connection con = DBConnection.connect();
+
+        String checkQuery =
+                "SELECT * FROM Categories WHERE name=?";
+
+        PreparedStatement checkPs =
+                con.prepareStatement(checkQuery);
+
+        checkPs.setString(1, name);
+
+        ResultSet rs = checkPs.executeQuery();
+
+        if (rs.next()) {
+
+            showAlert("Error",
+                    "Category already exists!");
 
             return;
         }
 
+        String insertQuery =
+                "INSERT INTO Categories(name, user_id)\n" +
+                "VALUES(?, ?)";
+
+        PreparedStatement insertPs =
+                con.prepareStatement(insertQuery);
+
+        insertPs.setString(1, name);
+           
+        insertPs.setInt(2,
+        Session.currentUserId);
         
-        // Prevent duplicate categories
-        for (Category c : categoryList) {
+        insertPs.executeUpdate();
 
-            if (c.getName().equalsIgnoreCase(name)) {
-
-                showAlert("Error", "Category already exists!");
-
-                return;
-            }
-        }
-
-        
-        // Create new category object
-        Category category = new Category(idCounter++, name);
-
-        
-        // Add category to list
-        categoryList.add(category);
-
-        
-        // Sort categories and re-arrange IDs
-        sortAndReindex();
-
-        
-       
-        
-        // Clear text field
         txtCategoryName.clear();
+
+        loadCategories();
+
+        showAlert("Success",
+                "Category added successfully!");
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
+}
 
     
     
     /**
      * Handles deleting selected category
      */
-    @FXML
-    private void handleDeleteCategory(ActionEvent event) {
+  @FXML
+void handleDeleteCategory(ActionEvent event) {
 
-        Category selected =
-                tableCategories.getSelectionModel().getSelectedItem();
+    Category selected =
+            tableCategories
+                    .getSelectionModel()
+                    .getSelectedItem();
 
-        
-        // Validation if no category selected
-        if (selected == null) {
+    if (selected == null) {
 
-            showAlert("Error",
-                    "Please select a category to delete!");
+        showAlert("Error",
+                "Please select a category!");
 
-            return;
-        }
-
-        
-        // Remove selected category
-        categoryList.remove(selected);
-
-        
-        // Re-sort and update IDs
-        sortAndReindex();
-
-        
-        // Update file after deletion
-        updateFile();
+        return;
     }
+
+    try {
+
+        Connection con = DBConnection.connect();
+
+        // حذف العمليات المرتبطة بالتصنيف أولاً
+        String deleteTransactionsQuery =
+                "DELETE FROM Transactions "
+                + "WHERE category=?";
+
+        PreparedStatement ps2 =
+                con.prepareStatement(
+                        deleteTransactionsQuery);
+
+        ps2.setString(1,
+                selected.getName());
+
+        ps2.executeUpdate();
+
+         loadTransactions();
+        // حذف التصنيف نفسه
+        String query =
+                "DELETE FROM Categories WHERE id=?";
+
+        PreparedStatement ps =
+                con.prepareStatement(query);
+
+        ps.setInt(1, selected.getId());
+
+        ps.executeUpdate();
+
+        loadCategories();
+
+        showAlert("Success",
+                "Category deleted successfully!");
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+    }
+}
 
     
     
     /**
      * Rewrites categories file after deletion or sorting
      */
+  
+  /*
     private void updateFile() {
 
         try {
@@ -363,7 +414,6 @@ public class CategoriesController implements Initializable {
                                 + "\n"
                 );
             }
-
             writer.close();
 
         } catch (IOException e) {
@@ -371,13 +421,14 @@ public class CategoriesController implements Initializable {
             showAlert("Error", "Error updating file!");
         }
     }
-
+    */
     
     
     /**
      * Reads last ID from file
      * to continue counting correctly
      */
+  /*
     private void setNextId() {
 
         try {
@@ -424,7 +475,7 @@ public class CategoriesController implements Initializable {
         }
     }
 
-    
+    */
     
     /**
      * Sort categories alphabetically
@@ -434,30 +485,16 @@ public class CategoriesController implements Initializable {
 
         
         // Sort alphabetically by category name
-        categoryList.sort(
-
-                Comparator.comparing(
-                        c -> c.getName().toLowerCase()
-                )
-        );
-
         
-        // Re-arrange IDs after sorting
-        for (int i = 0; i < categoryList.size(); i++) {
+    FXCollections.sort(
 
-            categoryList.get(i).setId(i + 1);
-        }
+            categoryList,
 
-        
-        // Update next available ID
-        idCounter = categoryList.size() + 1;
+            Comparator.comparing(
+                    Category::getName
+            )
+    );
 
-        
-        // Refresh table view
-        tableCategories.refresh();
-
-        
-        // Save updated order into file
-        updateFile();
+    tableCategories.refresh();
     }
 }

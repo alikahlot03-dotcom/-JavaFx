@@ -5,29 +5,41 @@
  */
 package FinanceTrackerController;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
 import Utils.psswordHash;
+
 import java.security.NoSuchAlgorithmException;
+
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
+
 import javafx.scene.input.MouseEvent;
+
 import javafx.stage.Stage;
+
+import Utils.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * FXML Controller class
@@ -38,26 +50,37 @@ public class SignUpController implements Initializable {
 
     @FXML
     private Button btnSignUp;
+
     @FXML
     private TextField textFieldFirstName;
+
     @FXML
     private TextField textFieldLastName;
+
     @FXML
     private TextField textFieldEmail;
+
     @FXML
     private PasswordField textFieldPassword;
+
     @FXML
     private PasswordField textFeildConfirmPassword;
+
     @FXML
     private Label labelHintFirstName;
+
     @FXML
     private Label labelHintLastName;
+
     @FXML
     private Label labelHintEmail;
+
     @FXML
     private Label labelHintPassword;
+
     @FXML
     private Label labelHIntConfirmPassword;
+
     @FXML
     private Label LoginNow;
 
@@ -66,141 +89,231 @@ public class SignUpController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         LoginNow.setOnMouseClicked(event -> {
-    try {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
-    } catch (IOException e) {
-        e.printStackTrace();
+
+            try {
+
+                Parent root =
+                        FXMLLoader.load(
+                                getClass()
+                                        .getResource("/view/Login.fxml"));
+
+                Stage stage =
+                        (Stage) ((Node)
+                                event.getSource())
+                                .getScene()
+                                .getWindow();
+
+                stage.setScene(new Scene(root));
+
+                stage.show();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        });
     }
-});
-    }    
 
     @FXML
-    private void SignupHandler(ActionEvent event) throws NoSuchAlgorithmException {  
+    private void SignupHandler(ActionEvent event)
+            throws NoSuchAlgorithmException {
 
-if (textFieldFirstName.getText().isEmpty() || textFieldLastName.getText().isEmpty() || 
-        textFieldEmail.getText().isEmpty() || textFieldPassword.getText().isEmpty() || 
-        textFeildConfirmPassword.getText().isEmpty()) {
-        
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Field Error");
-        alert.setHeaderText(null);
-        alert.setContentText("Please fill all fields!");
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-        alert.show();
-        return;
-    }
+        if (textFieldFirstName.getText().isEmpty()
+                || textFieldLastName.getText().isEmpty()
+                || textFieldEmail.getText().isEmpty()
+                || textFieldPassword.getText().isEmpty()
+                || textFeildConfirmPassword.getText().isEmpty()) {
 
-    // 2. التحقق من تطابق كلمات المرور
-    if (!textFieldPassword.getText().equals(textFeildConfirmPassword.getText())) {
-        Alert alert = new Alert(Alert.AlertType.ERROR); // إنشاء تنبيه جديد أو استخدام القديم
-        alert.setTitle("Password Error");
-        alert.setContentText("Passwords do not match!");
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-        alert.show();
-        return;
-    }
+            Alert alert =
+                    new Alert(Alert.AlertType.ERROR);
 
-    //هين انا بكمل التشفير 
-    try {
-        // استدعاء دالة التشفير من الكلاس الخاص بك
-        String hashedPassword = psswordHash.hashPassword(textFieldPassword.getText());
+            alert.setTitle("Field Error");
 
-        //هين انا ممكن استخدم البفر لانها بسرع  وبتنظم البيانات ممكن استخدمها للبيانات الكبيرة يعني هيا زي عربة بتخزن البيانات بالممري ومجرد متضغط انت بتنقله على الملف 
-        //BufferedWriter writer = new BufferedWriter(new FileWriter("Document/User.txt", true)
-        try (
-                FileWriter writer = new FileWriter("Document/User.txt", true)) {
-            String id = String.valueOf(System.currentTimeMillis()).substring(7);
-            String userRow = id + "," + textFieldFirstName.getText() + "," + 
-                             textFieldLastName.getText() + "," + textFieldEmail.getText() + "," + 
-                             hashedPassword+"\n";
+            alert.setHeaderText(null);
 
-            writer.write(userRow);
-           
-           // writer.newLine();
+            alert.setContentText(
+                    "Please fill all fields!");
+
+            alert.getDialogPane()
+                    .getStylesheets()
+                    .add(getClass()
+                            .getResource("/css/styleProject.css")
+                            .toExternalForm());
+
+            alert.show();
+
+            return;
+        }
+
+        // 2. التحقق من تطابق كلمات المرور
+        if (!textFieldPassword.getText()
+                .equals(textFeildConfirmPassword.getText())) {
+
+            Alert alert =
+                    new Alert(Alert.AlertType.ERROR);
+
+            alert.setTitle("Password Error");
+
+            alert.setContentText(
+                    "Passwords do not match!");
+
+            alert.getDialogPane()
+                    .getStylesheets()
+                    .add(getClass()
+                            .getResource("/css/styleProject.css")
+                            .toExternalForm());
+
+            alert.show();
+
+            return;
+        }
+
+        //هين انا بكمل التشفير
+        try {
+
+            // استدعاء دالة التشفير من الكلاس الخاص بك
+            String hashedPassword =
+                    psswordHash.hashPassword(
+                            textFieldPassword.getText());
+
+            Connection con = DBConnection.connect();
+
+            // التحقق إذا الإيميل موجود مسبقاً
+            String checkQuery =
+                    "SELECT * FROM Users WHERE email=?";
+
+            PreparedStatement checkPs =
+                    con.prepareStatement(checkQuery);
+
+            checkPs.setString(1,
+                    textFieldEmail.getText());
+
+            ResultSet rs =
+                    checkPs.executeQuery();
+
+            if (rs.next()) {
+
+                Alert alert =
+                        new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Email Error");
+
+                alert.setHeaderText(null);
+
+                alert.setContentText(
+                        "Email already exists!");
+
+                alert.show();
+
+                return;
+            }
+
+            // حفظ المستخدم داخل قاعدة البيانات
+            String query =
+                    "INSERT INTO Users "
+                    + "(first_name, last_name, email, password_hash) "
+                    + "VALUES (?, ?, ?, ?)";
+
+            PreparedStatement ps =
+                    con.prepareStatement(query);
+
+            ps.setString(1,
+                    textFieldFirstName.getText());
+
+            ps.setString(2,
+                    textFieldLastName.getText());
+
+            ps.setString(3,
+                    textFieldEmail.getText());
+
+            ps.setString(4,
+                    hashedPassword);
+
+            ps.executeUpdate();
 
             // تنبيه بالنجاح (Success Alert)
-            Alert success = new Alert(Alert.AlertType.INFORMATION);
-             success.setContentText("Account created successfully!");
-            success.getDialogPane().getStyleClass().add("alert-success");
-            success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-           success.setContentText("Account created successfully!");
-           success.getDialogPane().getStyleClass().add("alert-success");
-//            success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-//            success.showAndWait();
-////            success.show();
-//          Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml")); 
-//    
-//    // 2. الحصول على النافذة الحالية (Stage)
-//       Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-//    
-//    // 3. تعيين المشهد الجديد
-//    Scene scene = new Scene(root);
-//    stage.setScene(scene);
-//    stage.show();
-success.showAndWait().ifPresent(response -> {
-    if (response == ButtonType.OK) {
-        try {
-            // الانتقال إلى صفحة اللوقن باستخدام Lambda
-            Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
+            Alert success =
+                    new Alert(Alert.AlertType.INFORMATION);
+
+            success.setTitle("Success");
+
+            success.setHeaderText(null);
+
+            success.setContentText(
+                    "Account created successfully!");
+
+            success.getDialogPane()
+                    .getStyleClass()
+                    .add("alert-success");
+
+            success.getDialogPane()
+                    .getStylesheets()
+                    .add(getClass()
+                            .getResource("/css/styleProject.css")
+                            .toExternalForm());
+
+            success.showAndWait().ifPresent(response -> {
+
+                if (response == ButtonType.OK) {
+
+                    try {
+
+                        // الانتقال إلى صفحة اللوقن باستخدام Lambda
+                        Parent root =
+                                FXMLLoader.load(
+                                        getClass()
+                                                .getResource("/view/Login.fxml"));
+
+                        Stage stage =
+                                (Stage) ((Node)
+                                        event.getSource())
+                                        .getScene()
+                                        .getWindow();
+
+                        stage.setScene(
+                                new Scene(root));
+
+                        stage.show();
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
-});
-        }
-    } catch (IOException e) {
-        System.out.println("Error saving to file: " + e.getMessage());
-    }
-
-}
 
     @FXML
-    private void onLoginClick(MouseEvent event) throws IOException {
-        
-        
-         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        
+    private void onLoginClick(MouseEvent event)
+            throws IOException {
+
+        Parent root =
+                FXMLLoader.load(
+                        getClass()
+                                .getResource("/view/Login.fxml"));
+
+        Stage stage =
+                (Stage) ((Node)
+                        event.getSource())
+                        .getScene()
+                        .getWindow();
+
         Scene scene = new Scene(root);
-//         scene.getStylesheets().add(getClass().getResource("/FinanceTracker/styleProject.css").toExternalForm());
-          scene.getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-            
-      
+
+        scene.getStylesheets()
+                .add(getClass()
+                        .getResource("/css/styleProject.css")
+                        .toExternalForm());
+
         stage.setScene(scene);
+
         stage.show();
-        
-        
     }
-      
-
-      
-      
-      
-   
-   
 }
-
-   
-    
-    
-    
-    
-    
-    
-
-      
-      
-      
-      
-    
-
-
-    
-    

@@ -4,32 +4,42 @@
  * and open the template in the editor.
  */
 package FinanceTrackerController;
-
+import Utils.Session;
 import Utils.psswordHash;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
+
 import java.net.URL;
+
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.ResourceBundle;
-import java.util.Scanner;
+
 import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
 import javafx.scene.input.MouseEvent;
+
 import javafx.stage.Stage;
-import model.User;
+
+import Utils.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * FXML Controller class
@@ -40,179 +50,233 @@ public class LoginController implements Initializable {
 
     @FXML
     private Button loginButton;
+
     @FXML
     private TextField textFieldEmail;
-    @FXML 
+
+    @FXML
     private PasswordField textFieldPassword;
+
     @FXML
     private Label createAccount;
-   
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         loginButton.setOnAction(event -> {
-        try {
-            // استدعاء ميثود المعالجة اللي أنت عاملها أصلاً
-            EventHandler(event); 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    });
-        
-        createAccount.setOnMouseClicked(event -> {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/SignUp.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    });
-    }    
 
-    @FXML
-    private void EventHandler(ActionEvent event) throws NoSuchAlgorithmException, IOException {
-   if (textFieldEmail.getText().isEmpty() || textFieldPassword.getText().isEmpty()) {
-     Alert alert = new Alert(Alert.AlertType.ERROR);
-         alert.setTitle("Fieled");
-         alert.setHeaderText(null);
-         alert.setContentText("Please fill all fields!"); 
-         alert.getDialogPane().getStylesheets().add(
-         getClass().getResource("/css/styleProject.css").toExternalForm());
-         alert.show();
-    return;
-}
-   
-   String email = textFieldEmail.getText().trim();
-   String password = textFieldPassword.getText().trim();
-   String hashPassword = psswordHash.hashPassword(textFieldPassword.getText());
-   
-//   boolean found = false;
-//    try (
-//            Scanner scanner = new Scanner(new File("Document/User.txt")))
-//    {
-//        while (scanner.hasNextLine()) {
-//            String line = scanner.nextLine();
-//            String[] data = line.split(","); // تقسيم السطر بالفاصلة
-//            
-//           //هين تاكد ان الملف يختوي على خمس معلومات وتحت كاتب انه يقرا ويتحقق منالاندكس الرابع والخامس ويشوف هل موجودين في الملف النصي ام لا وهو نتاج عملية ساين اب  
-//           //
-//            if (data.length >= 5) {
-//                if (data[3].trim().equals(email) && data[4].trim().equals(hashPassword)) {
-//                    found = true;
-//                    break;
-//                }
-//            }
-//        }
-//    } catch (FileNotFoundException e) {
-//        System.out.println("File not found!");
-//    }
-
-
-List<User> users = new ArrayList<>();
-try (Scanner scanner = new Scanner(new File("Document/User.txt"))) {
-    while (scanner.hasNextLine()) {
-        String[] data = scanner.nextLine().split(",");
-        if (data.length >= 5) {
-            users.add(new User(data[3].trim(), data[4].trim())); // إضافة الإيميل والباسورد المشفر
-        }
-    }
-}
-
-
-boolean found = users.stream()
-   .anyMatch(u -> 
-        u.getEmail() != null &&
-        u.getPasswordHash() != null &&
-        u.getEmail().equals(email) &&
-        u.getPasswordHash().equals(hashPassword)
-);
-
-//  
-//    if (found) {
-//        Alert success = new Alert(Alert.AlertType.INFORMATION);
-//        success.setContentText("Login Successful! Welcome.");
-//        success.getDialogPane().getStyleClass().add("alert-success");
-//        success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-//             success.showAndWait();
-//              
-//              Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
-//               Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//               stage.setScene(new Scene(root));
-//              stage.setTitle("Finance Tracker - Dashboard");
-//              stage.show();
-//            
-//    } 
-if (found) {
-    Alert success = new Alert(Alert.AlertType.INFORMATION);
-    success.setContentText("Login Successful! Welcome.");
-    success.getDialogPane().getStyleClass().add("alert-success");
-    success.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-
-    // --- هين بنستخدم اللامبدا ---
-    success.showAndWait().ifPresent(response -> {
-        if (response == javafx.scene.control.ButtonType.OK) {
             try {
-                // كود الانتقال للداشبورد باستخدام FXMLLoader
-                Parent root = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Finance Tracker - Dashboard");
-                stage.show();
-            } catch (IOException e) {
+
+                // استدعاء ميثود المعالجة اللي أنت عاملها أصلاً
+                EventHandler(event);
+
+            } catch (Exception e) {
+
                 e.printStackTrace();
             }
-        }
-    });
-    // ----------------------------------------------
-}
+        });
 
+        createAccount.setOnMouseClicked(event -> {
 
-else {
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setTitle("Login Failed");
-        errorAlert.setContentText("Invalid email or password!");
-        errorAlert.getDialogPane().getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-        errorAlert.show();
-            
-    }
+            try {
+
+                Parent root =
+                        FXMLLoader.load(
+                                getClass()
+                                        .getResource("/view/SignUp.fxml"));
+
+                Stage stage =
+                        (Stage) ((Node)
+                                event.getSource())
+                                .getScene()
+                                .getWindow();
+
+                stage.setScene(new Scene(root));
+
+                stage.show();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
             }
-    
+        });
+    }
 
     @FXML
-    private void ClickCreateAccount(MouseEvent event) throws IOException {
-        
-        Parent root = FXMLLoader.load(getClass().getResource("/view/SignUp.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        
-        Scene scene = new Scene(root);
-//         scene.getStylesheets().add(getClass().getResource("/FinanceTracker/styleProject.css").toExternalForm());
-          scene.getStylesheets().add(getClass().getResource("/css/styleProject.css").toExternalForm());
-            
-      
-        stage.setScene(scene);
-        stage.show();
-        
-    }
-    
-    
-    
+    private void EventHandler(ActionEvent event)
+            throws NoSuchAlgorithmException, IOException {
+
+        if (textFieldEmail.getText().isEmpty()
+                || textFieldPassword.getText().isEmpty()) {
+
+            Alert alert =
+                    new Alert(Alert.AlertType.ERROR);
+
+            alert.setTitle("Fieled");
+
+            alert.setHeaderText(null);
+
+            alert.setContentText(
+                    "Please fill all fields!");
+
+            alert.getDialogPane()
+                    .getStylesheets()
+                    .add(getClass()
+                            .getResource("/css/styleProject.css")
+                            .toExternalForm());
+
+            alert.show();
+
+            return;
+        }
+
+        String email =
+                textFieldEmail.getText().trim();
+
+        String password =
+                textFieldPassword.getText().trim();
+
+        String hashPassword =
+                psswordHash.hashPassword(
+                        textFieldPassword.getText());
+
+        boolean found = false;
+
+        try {
+
+            Connection con =
+                    DBConnection.connect();
+
+            String query =
+                    "SELECT * FROM Users "
+                    + "WHERE email=? "
+                    + "AND password_hash=?";
+
+            PreparedStatement ps =
+                    con.prepareStatement(query);
+
+            ps.setString(1, email);
+
+            ps.setString(2, hashPassword);
+
+            ResultSet rs =
+                    ps.executeQuery();
+
+           if (rs.next()) {
+
+              found = true;
+
+              Session.currentUserId =
+            rs.getInt("id");
 }
-            
 
-        
-        
-        
-    
-    
-    
+        } catch (Exception e) {
 
-   
+            e.printStackTrace();
+        }
 
-    
+        if (found) {
 
-    
+            Alert success =
+                    new Alert(Alert.AlertType.INFORMATION);
+
+            success.setContentText(
+                    "Login Successful! Welcome.");
+
+            success.getDialogPane()
+                    .getStyleClass()
+                    .add("alert-success");
+
+            success.getDialogPane()
+                    .getStylesheets()
+                    .add(getClass()
+                            .getResource("/css/styleProject.css")
+                            .toExternalForm());
+
+            // --- هين بنستخدم اللامبدا ---
+            success.showAndWait().ifPresent(response -> {
+
+                if (response
+                        == javafx.scene.control.ButtonType.OK) {
+
+                    try {
+
+                        // كود الانتقال للداشبورد باستخدام FXMLLoader
+                        Parent root =
+                                FXMLLoader.load(
+                                        getClass()
+                                                .getResource("/view/Dashboard.fxml"));
+
+                        Stage stage =
+                                (Stage) ((Node)
+                                        event.getSource())
+                                        .getScene()
+                                        .getWindow();
+
+                        stage.setScene(
+                                new Scene(root));
+
+                        stage.setTitle(
+                                "Finance Tracker - Dashboard");
+
+                        stage.show();
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                    }
+                }
+            });
+            // ----------------------------------------------
+        }
+
+        else {
+
+            Alert errorAlert =
+                    new Alert(Alert.AlertType.ERROR);
+
+            errorAlert.setTitle("Login Failed");
+
+            errorAlert.setContentText(
+                    "Invalid email or password!");
+
+            errorAlert.getDialogPane()
+                    .getStylesheets()
+                    .add(getClass()
+                            .getResource("/css/styleProject.css")
+                            .toExternalForm());
+
+            errorAlert.show();
+        }
+    }
+
+    @FXML
+    private void ClickCreateAccount(MouseEvent event)
+            throws IOException {
+
+        Parent root =
+                FXMLLoader.load(
+                        getClass()
+                                .getResource("/view/SignUp.fxml"));
+
+        Stage stage =
+                (Stage) ((Node)
+                        event.getSource())
+                        .getScene()
+                        .getWindow();
+
+        Scene scene = new Scene(root);
+
+        scene.getStylesheets()
+                .add(getClass()
+                        .getResource("/css/styleProject.css")
+                        .toExternalForm());
+
+        stage.setScene(scene);
+
+        stage.show();
+    }
+}

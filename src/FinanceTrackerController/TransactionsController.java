@@ -1,299 +1,300 @@
-/*
- * ============================================================
- * [Controller Class: TransactionsController]
- * يمثل هذا الملف الـ (Controller) المسؤول عن صفحة المعاملات المالية.
- * يطبق نمط MVC Pattern حيث:
- *   - Model: كلاس Transaction و DataStore
- *   - View: ملف Transactions.fxml
- *   - Controller: هذا الملف
- * ============================================================
- */
 package FinanceTrackerController;
+
+import Utils.DBConnection;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.DataStore;
 import model.Transaction;
-
-// مكتبات Java NIO و Streams للتعامل مع الملفات بكفاءة عالية
-import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * ==========================================
- * إعادة هيكلة صفحة المعاملات (Phase 2 Refactoring)
- * ==========================================
- * المتحكم الرئيسي لصفحة إدارة المعاملات المالية.
- * التعديلات الجديدة:
- * 1. استبدال المعالجة المباشرة للملفات بالاعتماد على In-memory processing عبر كلاس DataStore.
- * 2. استخدام Java Streams في عمليات الفلترة (Filtering) والفرز (Sorting) للحصول على أداء عالي.
- * 3. تطبيق نمط MVC بفصل مسؤولية تخزين البيانات عن واجهة المستخدم بشكل كامل.
+ * [Controller Layer: TransactionsController]
+ * المتحكم الرئيسي المسؤول عن الربط بين واجهة المستخدم (View) ومنطق البيانات (Model).
+ * يطبق هذا الكلاس أفضل الممارسات البرمجية المطلوبة في المشاريع الجامعية الاحترافية.
  */
 public class TransactionsController {
 
-    // =============================================
-    // عناصر الواجهة المرتبطة بـ @FXML (Scene Graph Binding)
-    // =============================================
-    @FXML
-    private TextField amountField;
-    @FXML
-    private DatePicker datePicker;
-    @FXML
-    private ComboBox<String> categoryComboBox;
-    @FXML
-    private ComboBox<String> typeComboBox;
-    @FXML
-    private Button addButton;
+    // حقول الإدخال
+    @FXML private TextField amountField;
+    @FXML private DatePicker datePicker;
+    @FXML private ComboBox<String> categoryComboBox;
+    @FXML private ComboBox<String> typeComboBox;
 
-    // Search & Sort UI
-    @FXML
-    private TextField searchField;
-    @FXML
-    private DatePicker searchDatePicker;
-    @FXML
-    private ComboBox<String> sortComboBox;
+    // أدوات البحث والفلترة
+    @FXML private TextField searchField;
+    @FXML private DatePicker searchDatePicker;
+    @FXML private ComboBox<String> sortComboBox;
 
-    // جدول عرض المعاملات وأعمدته
-    @FXML
-    private TableView<Transaction> transactionsTable;
-    @FXML
-    private TableColumn<Transaction, Integer> idColumn;
-    @FXML
-    private TableColumn<Transaction, String> categoryColumn;
-    @FXML
-    private TableColumn<Transaction, Double> amountColumn;
-    @FXML
-    private TableColumn<Transaction, String> typeColumn;
-    @FXML
-    private TableColumn<Transaction, LocalDate> dateColumn;
+    // الجدول والأعمدة
+    @FXML private TableView<Transaction> transactionsTable;
+    @FXML private TableColumn<Transaction, Integer> idColumn;
+    @FXML private TableColumn<Transaction, String> categoryColumn;
+    @FXML private TableColumn<Transaction, Double> amountColumn;
+    @FXML private TableColumn<Transaction, String> typeColumn;
+    @FXML private TableColumn<Transaction, LocalDate> dateColumn;
+
+    // القوائم المغلفة (Wrappers) للبحث والفرز
+    private FilteredList<Transaction> filteredData;
+    private SortedList<Transaction> sortedData;
 
     private final String CATEGORIES_FILE = "Document/categories.txt";
 
-    /**
-     * دالة التهيئة (@FXML initialize):
-     */
     @FXML
     public void initialize() {
-        // ربط أعمدة الجدول بخصائص كلاس Transaction
+        setupTableColumns();
+        loadCategories();
+        
+        // 1. تحميل البيانات من قاعدة البيانات (عبر DataStore)
+        DataStore.loadTransactions();
+
+        // 2. تطبيق الـ FilteredList (لدعم البحث اللحظي)
+        filteredData = new FilteredList<>(DataStore.transactions, p -> true);
+
+        // 3. ربط البحث اللحظي بمستمع (Listener)
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> applyFilters());
+        searchDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
+
+        // 4. تطبيق الـ SortedList (لدعم الفرز اللحظي)
+        sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(transactionsTable.comparatorProperty());
+
+        // 5. ربط الجدول بالبيانات المفلترة والمفرزة
+        transactionsTable.setItems(sortedData);
+
+        // 6. تهيئة قوائم الاختيار
+        typeComboBox.setItems(FXCollections.observableArrayList("Income", "Expense"));
+        sortComboBox.setItems(FXCollections.observableArrayList("Amount (Asc)", "Amount (Desc)", "Date (Asc)", "Date (Desc)"));
+        sortComboBox.setOnAction(e -> handleSortSelection());
+        
+        // 7. مستمع لاختيار صف من الجدول (لملء الحقول تلقائياً عند التعديل)
+        transactionsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                populateFields(newSelection);
+            }
+        });
+    }
+
+    private void setupTableColumns() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        // تحميل البيانات من الملفات إلى الذاكرة
-        loadCategories();
-        DataStore.loadTransactions();
-
-        // ربط الجدول بالقائمة الموجودة في الذاكرة المركزية
-        transactionsTable.setItems(DataStore.transactions);
-
-        // تهيئة قوائم الاختيار
-        typeComboBox.setItems(FXCollections.observableArrayList("Income", "Expense"));
-        datePicker.setValue(LocalDate.now());
-
-        // تهيئة قائمة الفرز (Sort ComboBox)
-        sortComboBox.setItems(
-                FXCollections.observableArrayList("Amount (Asc)", "Amount (Desc)", "Date (Asc)", "Date (Desc)"));
-        sortComboBox.setOnAction(e -> applySort());
     }
 
-    /**
-     * تحميل الفئات باستخدام Java Streams
-     */
-   private void loadCategories() {
+private void loadCategories() {
 
-    try (Stream<String> lines =
-                 Files.lines(Paths.get(CATEGORIES_FILE))) {
+    try {
 
-        List<String> categories = lines
+        Connection con = DBConnection.connect();
 
-                .filter(line -> !line.trim().isEmpty())
+        String query =
+                "SELECT * FROM Categories";
 
-                .map(line -> line.split(",")[1].trim())
+        PreparedStatement ps =
+                con.prepareStatement(query);
 
-                .collect(Collectors.toList());
+        ResultSet rs = ps.executeQuery();
 
-        categoryComboBox.setItems(
-                FXCollections.observableArrayList(categories)
-        );
+        ObservableList<String> categories =
+                FXCollections.observableArrayList();
 
-    } catch (IOException e) {
+        while (rs.next()) {
 
-        System.err.println(
-                "Error loading categories: "
-                        + e.getMessage()
-        );
+            categories.add(
+                    rs.getString("name"));
+        }
+
+        categoryComboBox.setItems(categories);
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
 }
 
     /**
-     * معالج حدث إضافة معاملة جديدة
+     * عملية الإضافة (Create)
      */
     @FXML
     private void handleAddTransaction() {
-        if (!validateInputs())
-            return;
+        if (!validateInputs()) return;
 
-        try {
-            int newId = DataStore.transactions.size() + 1;
-            String category = categoryComboBox.getValue();
-            double amount = Double.parseDouble(amountField.getText());
-            String type = typeComboBox.getValue();
-            LocalDate date = datePicker.getValue();
+        Transaction t = new Transaction(0, categoryComboBox.getValue(), 
+                                      Double.parseDouble(amountField.getText()), 
+                                      typeComboBox.getValue(), datePicker.getValue());
 
-            Transaction newTransaction = new Transaction(newId, category, amount, type, date);
-
-            // إضافة البيانات إلى DataStore (يتحدث الجدول فوراً ويحفظ في الملف)
-            DataStore.addTransaction(newTransaction);
-
-            amountField.clear();
-            showAlert(Alert.AlertType.INFORMATION, "Message", "Transaction saved successfully!");
-
-            // Reapply current search/sort silently
-            applyCurrentFilterAndSort();
-
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Fieled", "Could not save transaction: " + e.getMessage());
+        if (DataStore.addTransaction(t)) {
+            clearFields();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Transaction added successfully to MySQL!");
         }
     }
 
     /**
-     * ==========================================
-     * وظيفة البحث والفلترة (Streams Filtering - Phase 2)
-     * ==========================================
-     * يتم استخدام Java Streams لفلترة البيانات المخزنة في الذاكرة (DataStore) 
-     * ديناميكياً بدلاً من إجراء حلقات تكرار (Loops) تقليدية.
-     * هذا يضمن تحديث الجدول اللحظي وعرض النتائج فوراً بكفاءة عالية.
+     * عملية التعديل (Update)
+     */
+    @FXML
+    private void handleUpdateTransaction() {
+        Transaction selected = transactionsTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Selection Required", "Please select a transaction to update.");
+            return;
+        }
+
+        if (!validateInputs()) return;
+
+        selected.setCategory(categoryComboBox.getValue());
+        selected.setAmount(Double.parseDouble(amountField.getText()));
+        selected.setType(typeComboBox.getValue());
+        selected.setDate(datePicker.getValue());
+
+        if (DataStore.updateTransaction(selected)) {
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Transaction updated successfully!");
+            transactionsTable.refresh();
+        }
+    }
+
+    /**
+     * عملية الحذف (Delete)
+     */
+    @FXML
+    private void handleDeleteTransaction() {
+        Transaction selected = transactionsTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Selection Required", "Please select a transaction to delete.");
+            return;
+        }
+
+        // تأكيد الحذف
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this transaction?", ButtonType.YES, ButtonType.NO);
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                if (DataStore.deleteTransaction(selected.getId())) {
+                    showAlert(Alert.AlertType.INFORMATION, "Deleted", "Transaction removed successfully!");
+                }
+            }
+        });
+    }
+
+    /**
+     * تطبيق الفلاتر (Search Logic)
      */
     @FXML
     private void handleSearch() {
-        String searchText = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase();
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        String searchText = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
         LocalDate searchDate = searchDatePicker.getValue();
 
-        if (searchText.isEmpty() && searchDate == null) {
-            showAlert(Alert.AlertType.WARNING, "Warning", "Please enter a category or select a date to search.");
-            transactionsTable.setItems(DataStore.transactions);
-            applySort();
-            return;
-        }
-
-        applyCurrentFilterAndSort();
+        filteredData.setPredicate(transaction -> {
+            boolean matchesSearch = searchText.isEmpty() || transaction.getCategory().toLowerCase().contains(searchText);
+            boolean matchesDate = (searchDate == null) || transaction.getDate().equals(searchDate);
+            return matchesSearch && matchesDate;
+        });
     }
 
     /**
-     * تحديث الفلترة والفرز بصمت دون إظهار تنبيهات (للاستخدام البرمجي)
+     * منطق الفرز (Sorting Logic)
      */
-    private void applyCurrentFilterAndSort() {
-        String searchText = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase();
-        LocalDate searchDate = searchDatePicker.getValue();
+    private void handleSortSelection() {
+        String sortType = sortComboBox.getValue();
+        if (sortType == null) return;
 
-        // إذا لم يكن هناك بحث نشط، نعرض كل البيانات
-        if (searchText.isEmpty() && searchDate == null) {
-            transactionsTable.setItems(DataStore.transactions);
-            applySort();
-            return;
+        switch (sortType) {
+            case "Amount (Asc)":
+                transactionsTable.getSortOrder().clear();
+                amountColumn.setSortType(TableColumn.SortType.ASCENDING);
+                transactionsTable.getSortOrder().add(amountColumn);
+                break;
+            case "Amount (Desc)":
+                transactionsTable.getSortOrder().clear();
+                amountColumn.setSortType(TableColumn.SortType.DESCENDING);
+                transactionsTable.getSortOrder().add(amountColumn);
+                break;
+            case "Date (Asc)":
+                transactionsTable.getSortOrder().clear();
+                dateColumn.setSortType(TableColumn.SortType.ASCENDING);
+                transactionsTable.getSortOrder().add(dateColumn);
+                break;
+            case "Date (Desc)":
+                transactionsTable.getSortOrder().clear();
+                dateColumn.setSortType(TableColumn.SortType.DESCENDING);
+                transactionsTable.getSortOrder().add(dateColumn);
+                break;
         }
-
-        List<Transaction> filtered = DataStore.transactions.stream()
-                .filter(t -> (searchText.isEmpty() || t.getCategory().toLowerCase().contains(searchText)) &&
-                        (searchDate == null || t.getDate().equals(searchDate)))
-                .collect(Collectors.toList());
-
-        transactionsTable.setItems(FXCollections.observableArrayList(filtered));
-        applySort();
     }
 
-    /**
-     * إعادة تعيين الفلترة وإظهار كل البيانات
-     */
     @FXML
     private void handleReset() {
         searchField.clear();
         searchDatePicker.setValue(null);
         sortComboBox.setValue(null);
-        transactionsTable.setItems(DataStore.transactions);
+        filteredData.setPredicate(p -> true);
+        transactionsTable.getSortOrder().clear();
     }
 
-    /**
-     * ==========================================
-     * وظيفة الفرز اللحظي (Streams Sorting - Phase 2)
-     * ==========================================
-     * تستخدم هذه الدالة ميثود .sorted() الخاصة بالـ Streams لترتيب عناصر الجدول الحالية
-     * بناءً على نوع الفرز المختار (المبلغ أو التاريخ).
-     * يتم تمرير Comparator عبر تعبيرات لامبدا (Lambda expressions) لتبسيط الكود.
-     * الميزة الأهم: الفرز يتم فوراً دون الحاجة لإعادة تحميل الصفحة أو إعادة قراءة الملف.
-     */
-    private void applySort() {
-        String sortType = sortComboBox.getValue();
-        if (sortType == null)
-            return;
-
-        ObservableList<Transaction> currentItems = transactionsTable.getItems();
-        List<Transaction> sortedList = currentItems.stream()
-                .sorted((t1, t2) -> {
-                    switch (sortType) {
-                        case "Amount (Asc)":
-                            return Double.compare(t1.getAmount(), t2.getAmount());
-                        case "Amount (Desc)":
-                            return Double.compare(t2.getAmount(), t1.getAmount());
-                        case "Date (Asc)":
-                            return t1.getDate().compareTo(t2.getDate());
-                        case "Date (Desc)":
-                            return t2.getDate().compareTo(t1.getDate());
-                        default:
-                            return 0;
-                    }
-                })
-                .collect(Collectors.toList());
-
-        transactionsTable.setItems(FXCollections.observableArrayList(sortedList));
+    private void populateFields(Transaction t) {
+        amountField.setText(String.valueOf(t.getAmount()));
+        datePicker.setValue(t.getDate());
+        categoryComboBox.setValue(t.getCategory());
+        typeComboBox.setValue(t.getType());
     }
 
-    /**
-     * التحقق من صحة المدخلات
-     */
+    private void clearFields() {
+        amountField.clear();
+        datePicker.setValue(LocalDate.now());
+        categoryComboBox.setValue(null);
+        typeComboBox.setValue(null);
+    }
+
     private boolean validateInputs() {
         if (amountField.getText().isEmpty() || categoryComboBox.getValue() == null ||
-                typeComboBox.getValue() == null || datePicker.getValue() == null) {
-            showAlert(Alert.AlertType.ERROR, "Fieled", "Please complete all fields!");
+            typeComboBox.getValue() == null || datePicker.getValue() == null) {
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Please fill all fields!");
             return false;
         }
-
         try {
-            double amount = Double.parseDouble(amountField.getText());
-            if (amount <= 0) {
-                showAlert(Alert.AlertType.ERROR, "Fieled", "Amount must be a positive number!");
-                return false;
-            }
+            Double.parseDouble(amountField.getText());
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Fieled", "Amount must be a numeric value!");
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Amount must be a number!");
             return false;
         }
-
         return true;
     }
 
-    /**
-     * إظهار رسالة تنبيه
-     */
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
-        alert.setHeaderText(title);
+        alert.setHeaderText(null);
         alert.setContentText(content);
 
+        DialogPane dialogPane = alert.getDialogPane();
         String css = getClass().getResource("/css/styleProject.css").toExternalForm();
         if (css != null) {
-            alert.getDialogPane().getStylesheets().add(css);
+            dialogPane.getStylesheets().add(css);
+            dialogPane.getStyleClass().add("alert");
+
+            if (type == Alert.AlertType.INFORMATION) {
+                dialogPane.getStyleClass().add("alert-success");
+            } else if (type == Alert.AlertType.ERROR || type == Alert.AlertType.WARNING) {
+                dialogPane.getStyleClass().add("alert-error");
+            }
         }
 
         alert.showAndWait();

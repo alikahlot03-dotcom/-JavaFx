@@ -19,6 +19,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import model.Transaction;
 
+import Utils.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 /*
     هذا الكلاس مسؤول عن صفحة التقارير Reports
     
@@ -112,68 +118,50 @@ public class ReportsController implements Initializable {
         هذه الدالة تقرأ البيانات من ملف transactions.txt
         ثم تحول كل سطر إلى object من نوع Transaction
     */
-    void loadTransactions() {
+   void loadTransactions() {
 
-        
-        // تنظيف الليست قبل إعادة التحميل
-        transactionList.clear();
+    ObservableList<Transaction> list =
+            FXCollections.observableArrayList();
 
-        try {
+    try {
 
-            BufferedReader reader = new BufferedReader(
-                    new FileReader("Document/transactions.txt")
+        Connection con = DBConnection.connect();
+
+        String query =
+                "SELECT * FROM Transactions";
+
+        PreparedStatement ps =
+                con.prepareStatement(query);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            list.add(
+
+                    new Transaction(
+
+                            rs.getInt("id"),
+
+                            rs.getString("category"),
+
+                            rs.getDouble("amount"),
+
+                            rs.getString("type"),
+
+                            rs.getDate("date")
+                                    .toLocalDate()
+                    )
             );
-
-            String line;
-
-            
-            // قراءة الملف سطر سطر
-            while ((line = reader.readLine()) != null) {
-
-                
-                // تجاهل الأسطر الفارغة
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-
-                
-                /*
-                    تقسيم السطر باستخدام الفاصلة
-                    
-                    مثال:
-                    1,Food,50,Expense,2025-08-01
-                */
-                String[] parts = line.split(",");
-
-                
-                
-                // إنشاء object جديد من Transaction
-                transactionList.add(new Transaction(
-
-                        Integer.parseInt(parts[0].trim()),
-
-                        parts[1].trim(),
-
-                        Double.parseDouble(parts[2].trim()),
-
-                        parts[3].trim(),
-
-                        java.time.LocalDate.parse(parts[4].trim())
-                ));
-            }
-
-            reader.close();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
         }
 
-        
-        
-        // عرض البيانات داخل الجدول
-        tableTransactions.setItems(transactionList);
+        tableTransactions.setItems(list);
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
+}
 
     
     
@@ -184,54 +172,54 @@ public class ReportsController implements Initializable {
         استخدمنا Java Streams
         لحساب مجموع الدخل والمصروف بشكل احترافي
     */
-    void calculateReport() {
+    private void calculateReport() {
 
-        
-        
-        /*
-            حساب مجموع الـ Income
-            
-            الخطوات:
-            1- فلترة العمليات من نوع Income
-            2- استخراج قيمة amount
-            3- جمع القيم
-        */
-        double totalIncome = transactionList.stream()
+    double totalIncome = 0;
 
-                .filter(t -> t.getType().equalsIgnoreCase("Income"))
+    double totalExpense = 0;
 
-                .mapToDouble(Transaction::getAmount)
+    try {
 
-                .sum();
+        Connection con = DBConnection.connect();
 
-        
-        
-        
-        /*
-            حساب مجموع الـ Expense بنفس الطريقة
-        */
-        double totalExpense = transactionList.stream()
+        String query =
+                "SELECT * FROM Transactions";
 
-                .filter(t -> t.getType().equalsIgnoreCase("Expense"))
+        PreparedStatement ps =
+                con.prepareStatement(query);
 
-                .mapToDouble(Transaction::getAmount)
+        ResultSet rs = ps.executeQuery();
 
-                .sum();
+        while (rs.next()) {
 
-        
-        
-        
-        // حساب الرصيد النهائي
-        double balance = totalIncome - totalExpense;
+            double amount =
+                    rs.getDouble("amount");
 
-        
-        
-        
-        // عرض النتائج داخل الـ Labels
-        lblIncome.setText(String.valueOf(totalIncome));
+            String type =
+                    rs.getString("type");
 
-        lblExpense.setText(String.valueOf(totalExpense));
+            if (type.equalsIgnoreCase("Income")) {
 
-        lblBalance.setText(String.valueOf(balance));
+                totalIncome += amount;
+
+            } else {
+
+                totalExpense += amount;
+            }
+        }
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
     }
+
+    double balance =
+            totalIncome - totalExpense;
+
+    lblIncome.setText("" + totalIncome);
+
+    lblExpense.setText("" + totalExpense);
+
+    lblBalance.setText("" + balance);
+}
 }

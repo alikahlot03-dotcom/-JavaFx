@@ -24,7 +24,7 @@ public class DashboardController {
     @FXML private Button reportsBtn;
     @FXML private Button logoutBtn;
 
-    // 🔥 Cache للصفحات
+    
     private final Map<String, Parent> views = new HashMap<>();
 
     @FXML
@@ -81,12 +81,12 @@ public class DashboardController {
             mainPane.setCenter(views.get(page));
 
         } catch (Exception e) {
-            System.err.println("❌ Error loading page: " + page);
+            System.err.println(" Error loading page: " + page);
             e.printStackTrace();
         }
     }
 
-    // 🔥 تفعيل زر القائمة
+    // تفعيل زر القائمة
     private void setActive(Button activeBtn) {
 
         dashboardBtn.getStyleClass().remove("active-nav");
@@ -97,7 +97,7 @@ public class DashboardController {
         activeBtn.getStyleClass().add("active-nav");
     }
 
-    // 🔥 Logout
+  //   Logout
     private void handleLogout(javafx.event.ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
