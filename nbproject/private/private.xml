@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/msi/Desktop/javaFxProject-master/src/FinanceTrackerController/TransactionsController.java</file>
+            <file>file:/C:/Users/msi/Desktop/javaFxProject-master/src/model/DataStore.java</file>
+            <file>file:/C:/Users/msi/Desktop/javaFxProject-master/src/FinanceTrackerController/ReportsController.java</file>
+            <file>file:/C:/Users/msi/Desktop/javaFxProject-master/src/FinanceTrackerController/CategoriesController.java</file>
+            <file>file:/C:/Users/msi/Desktop/javaFxProject-master/src/FinanceTrackerController/LoginController.java</file>
+            <file>file:/C:/Users/msi/Desktop/javaFxProject-master/src/Utils/Session.java</file>
+        </group>
     </open-files>
 </project-private>
